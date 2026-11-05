@@ -58,35 +58,17 @@ Every API follows one convention:
 
 | Env | API | IdP |
 |---|---|---|
-| prod | `https://grasp-daas.com/api/{service}/{version}` | `https://auth.grasp-daas.com` |
-| dev | `https://grasp-daas.com/api/{service}-dev/{version}` | `https://auth-dev.grasp-daas.com` |
-| local | `http://localhost:<port>` (dev IdP keys) | `http://localhost:8000` |
+| prod (default) | `https://grasp-daas.com/api/{service}/{version}` | `https://auth.grasp-daas.com` |
+| dev (explicit) | `https://grasp-daas.com/api/{service}-dev/{version}` | `https://auth-dev.grasp-daas.com` |
 
-Every Go service exposes `health-check/`, `version/` and `docs/` (OpenAPI).
-Example: `https://grasp-daas.com/api/config-dev/v3/docs/`.
+Every service exposes `health-check/`, `version/` and `docs/` (OpenAPI).
+Example: `https://grasp-daas.com/api/config/v3/docs/`.
 
 ## Tenants and the public tenant
 
 - A **tenant** is the isolation boundary: its own bucket `ds-<tenant_uuid>-<env>`,
   its own config rows, secrets, files and graph.
-- The **platform tenant** (`0fa08bbe-0ad8-4586-b17d-3bb51438bdd6`) may mark rows
-  `issuer: "public"`. Public rows are readable by every tenant. That is how
-  shared content (playbooks, skills, courses, this book) reaches everyone.
+- The **platform tenant** may mark rows `issuer: "public"`. Public rows are
+  readable by every tenant. That is how shared content (playbooks, skills,
+  courses, this book) reaches everyone.
 - `public` is not a tenant you log into; it is a visibility flag.
-
-## Repository map
-
-| Area | Repos |
-|---|---|
-| Identity | `identity-server`, `ds-iam`, `ds-scim-group-sync`, `idp-kafka-broker` |
-| Control | `ds-config`, `ds-vault` |
-| Triggers | `ds-message`, `ds-ingress`, `ds-core-scheduler` |
-| Compute | `ds-clone-dispatcher`, `ds-workflow-dispatcher`, `ds-workflow-manager`, `ds-pipeline-router`, `ds-pipeline-{bronze,silver,gold}-service`, `ds-pipeline-infra` |
-| Data | `ds-fetch`, `ds-fetch-indexer`, `ds-file`, `ds-state`, `ds-knowledge-graph`, `ds-data-partition-provision` |
-| Providers | `ds-provider-{tripletex,xledger,unimicro,microsoft,adminflow,aic,grasp}-py-lib`, `ds-protocol-{http,soap}-py-lib` |
-| AI | `ds-ai-gateway`, `ds-tools`, `ds-go-tools-client`, `ds-agent`, `ds-skill-sink`, `ds-skill-autocapture`, `ds-code-pipeline` |
-| Shared libs | `ds-go-kit`, `ds-go-echo-template`, `ds-go-echo-middleware`, `ds-go-iam-middleware`, `ds-go-policy`, `ds-event-stream-go-sdk`, `ds-config-go-sdk`, `ds-vault-go-sdk` |
-| Clients | `ds-client` (AIC front + BFF), `ds-workflow-client`, `ds-vault-client`, `ds-web-billing-app` |
-| Ops | `ds-event-streams`, `ds-infrastructure`, `ds-k8s-platform`, `ds-k8s-ws`, `ds-health` |
-
-Canonical architecture: `aic-cli/ARCHITECTURE.md` (the `aic` CLI itself is planned, not built).

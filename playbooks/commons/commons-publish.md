@@ -24,8 +24,7 @@ Gateway models find it via `discover_tools` → `expand_tool`. Playbooks are ran
 
 ## Course
 
-`POST {app}/web-api/courses` (Bearer), body `CourseSaveContract`
-(`ds-client/packages/course-contract/src/index.ts`): `name`, `slug`, `description`, `theme`, `status`,
+`POST {app}/web-api/courses` (Bearer), body `CourseSaveContract`: `name`, `slug`, `description`, `theme`, `status`,
 `is_public`, `acl {owners: [≥1], viewers}`, `steps[{id, title, content_loaded: true, removed_column_ids: [],
 columns: [{id, type: "markdown", content, width: 100, vertical_align: "top", image_alt: ""}]}]`,
 `step_order`, `removed_step_ids`, `remove_cover: false`, `remove_background: false`.

@@ -58,5 +58,4 @@ Never write a literal credential into config, code, prompts, logs or commits.
 2. References by key keep working; run the dependent block once in dev to confirm.
 3. Revoke the old credential at the provider.
 
-Go SDK `ds-vault-go-sdk`, Python `ds-vault-py-sdk`. Ops secrets (JWT keys, SSO, Basic headers) live
-in AWS SSM, not here.
+Go SDK `ds-vault-go-sdk`, Python `ds-vault-py-sdk`.

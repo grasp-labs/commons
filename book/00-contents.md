@@ -1,11 +1,13 @@
 # The AI Commons Book
 
-Staff onboarding for AI Commons: **1 IdP, 12 services, 4 compute blocks, 20 tools.**
+The guide to AI Commons: **1 IdP, 12 services, 4 compute blocks, 20 tools.**
 Start with the course *Welcome to Commons*; come here for the detail.
+Production is the default environment. Select dev only when the task explicitly
+requires it; every write still requires review and approval.
 
 | # | Chapter | Read it to |
 |---|---|---|
-| 1 | [Platform overview](01-platform-overview.md) | Get the mental model, URLs, tenants, repos |
+| 1 | [Platform overview](01-platform-overview.md) | Get the mental model, URLs and tenants |
 | 2 | [Security and logging in](02-security-and-login.md) | Log in, get tokens, understand IAM and secrets |
 | 3 | [The services](03-services.md) | Know what each API does and its endpoints |
 | 4 | [The tools](04-tools.md) | Use the 20 tools and the path model |
@@ -15,7 +17,7 @@ Start with the course *Welcome to Commons*; come here for the detail.
 | 8 | [Skills and playbooks](08-skills-and-playbooks.md) | Teach agents; install IDE skills |
 | 9 | [Building a datalake](09-datalake.md) | Bronze → silver → gold, then query |
 | 10 | [Building a workflow](10-workflow.md) | Task DAGs, bindings, runs |
-| 11 | [Get started examples](11-get-started.md) | Nine hands-on exercises in dev |
+| 11 | [Get started examples](11-get-started.md) | Nine hands-on production examples |
 | 12 | [Reference](12-reference.md) | URLs, topics, codes, glossary, further reading |
 
-Skills for Claude Code and Cursor ship as the `commons` plugin in `plugin/` (chapter 8).
+Skills for Claude Code, Cursor and Codex ship in the `grasp-labs/commons` repository (chapter 8).

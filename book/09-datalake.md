@@ -26,10 +26,9 @@ linked_service ──► gold dataset  ──┘
 
 ### 0. Tenant prerequisites
 
-Done automatically by `ds-data-partition-provision` when a tenant is verified:
-bucket, SQS notifications for the fetch indexer, default `HTTP` and `AIC-AWS`
-linked services, vault secrets, tenant IAM user. For on-prem sources, add a
-VPN: `POST /vpn-connection/` (`docs/vpn_connection/INFO.md`).
+Done automatically when a tenant is verified: bucket, file indexing, default
+`HTTP` and `AIC-AWS` linked services, vault secrets, tenant IAM user. For
+on-prem sources, add a VPN: `POST /vpn-connection/`.
 
 ### 1. Linked service — how to reach the source
 
@@ -170,6 +169,3 @@ ask before returning identifiable rows. See `commons-talk-to-data`.
 - [ ] Partitions only on low-cardinality, query-relevant columns.
 - [ ] All credentials are `@{get_secret, …}`.
 - [ ] Dev run succeeded and gold row count is plausible before prod.
-
-Reference: `ds-pipeline-router/README.md`, `ds-pipeline-{bronze,silver,gold}-service/README.md`,
-`internal/dto/pipeline/data/*.json` (tested examples).

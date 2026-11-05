@@ -37,8 +37,8 @@ request for **every block mapped to the event**.
 | `visma_bnxt` | `x-vwd-signature-v1` |
 | `api_key` | `X-Api-Key` |
 
-Keep `validate_payload: true`; without it anyone with the URL can trigger runs. New provider: add a
-verifier in `ds-ingress/internal/service/webhook_verification.go`.
+Keep `validate_payload: true`; without it anyone with the URL can trigger runs. For a provider not
+listed, ask the platform team.
 
 ## Behaviour
 

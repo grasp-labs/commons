@@ -100,5 +100,5 @@ first. Once it has been reviewed, the platform team promotes it to Commons.
 ## Done?
 
 You have touched identity, config, files, graph, triggers, both compute paths,
-the datalake, AI and MCP. Next: pick a repo from chapter 1, read its README and
-`docs/`, and run it locally.
+the datalake, AI and MCP. Next: take the course *Build with Commons* and read
+each service's OpenAPI docs at `<base>/docs/`.

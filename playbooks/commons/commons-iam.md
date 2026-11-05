@@ -81,5 +81,4 @@ Every IAM write changes privileges: say what it grants before asking for approva
    that matches the CRN? Is any deny matching? Is the tenant segment `aic` or your UUID?
 3. Is the member `active` and in a group with the binding? Is the policy `active`?
 
-Tenants get `IAMFullAccess` at bootstrap. Reference: `ds-iam/docs/policy/policies.md`,
-`managed-policies.md`. Safety pattern for Claude's own client: `commons-safety`.
+Tenants get `IAMFullAccess` at bootstrap. Safety pattern for an agent's own client: `commons-safety`.

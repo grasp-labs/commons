@@ -125,6 +125,3 @@ like platform tools:
 4. Grant IAM `ai-gateway:callMcpTool` on `crn:<tenant>::ai-gateway::mcp-tool:<slug>/<tool>`.
 
 They appear to models as `mcp_<slug>__<tool>`.
-
-Reference: `ds-ai-gateway/docs/walkthroughs/MCP/claude-mcp-tools.md`,
-`ds-config/docs/llm/mcp-server-contract.md`, Python client `claude-mcp/grasp_mcp.py`.

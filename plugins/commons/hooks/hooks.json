@@ -2,7 +2,7 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "mcp__.*commons.*|Bash|Read",
+        "matcher": "mcp__.*commons.*|Bash|Read|Grep|Glob",
         "hooks": [
           { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/guard.sh" }
         ]

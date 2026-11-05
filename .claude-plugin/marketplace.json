@@ -2,7 +2,7 @@
   "name": "commons",
   "description": "Claude Code plugins for AI Commons",
   "owner": {
-    "name": "aider"
+    "name": "Grasp Labs"
   },
   "plugins": [
     {

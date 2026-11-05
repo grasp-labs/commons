@@ -34,8 +34,8 @@ stored() { # ACCOUNT
 }
 
 exp_of() {
-  jq -R 'split(".")[1] | gsub("-";"+") | gsub("_";"/") | @base64d | fromjson | .exp // 0' \
-    <<<"$1" 2>/dev/null || echo 0
+  printf '%s' "$1" | jq -R 'split(".")[1] | gsub("-";"+") | gsub("_";"/")
+    | . + ("=" * ((4 - length % 4) % 4)) | @base64d | fromjson | .exp // 0' 2>/dev/null || echo 0
 }
 
 umask 077
@@ -44,7 +44,7 @@ mkdir -p "${cache%/*}"
 token=$(cat "$cache" 2>/dev/null || true)
 
 if [[ -z $token ]] || (( $(exp_of "$token") < $(date +%s) + 120 )); then
-  up=$(tr '[:lower:]' '[:upper:]' <<<"$env")
+  up=$(printf '%s' "$env" | tr '[:lower:]' '[:upper:]')
   id_var=COMMONS_${up}_CLIENT_ID secret_var=COMMONS_${up}_CLIENT_SECRET
   id=${!id_var:-$(stored client_id || true)}
   secret=${!secret_var:-$(stored client_secret || true)}

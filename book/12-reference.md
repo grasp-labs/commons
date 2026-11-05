@@ -53,20 +53,9 @@ Versions: `config/v3`, `file/v2`, all others `v1`.
 
 ## Where to read more
 
-| Topic | File |
+| Topic | Where |
 |---|---|
-| Architecture | `aic-cli/ARCHITECTURE.md` |
-| Auth deep dive | `identity-server/docs/training/IDP-Security-Deep-Dive.md` |
-| SSO | `identity-server/docs/training/How-To-Setup-SSO.md` |
-| IAM contract | `ds-iam/docs/contract.md` |
-| Middleware | `ds-go-echo-middleware/docs/middleware-guide.md` |
-| Schedules | `ds-config/docs/schedule/info.md` |
-| Silver SQL | `ds-config/silver-sql.md` |
-| Gateway contract | `ds-config/docs/llm/config-ai-gateway-contract.md` |
-| Skills | `ds-config/docs/llm/skill-contract.md` |
-| Playbooks | `ds-ai-gateway/docs/playbooks/playbook.md` |
-| MCP | `ds-ai-gateway/docs/walkthroughs/MCP/claude-mcp-tools.md` |
-| KG | `ds-knowledge-graph/docs/USER_GUIDE.md` |
-| Public resources | `ds-knowledge-graph/docs/PLATFORM_PUBLIC_RESOURCES.md` |
-| Workflow executor | `ds-workflow-manager/docs/contract.md` |
-| Billing | `ds-config/docs/billing/how-it-works.md` |
+| API reference | `https://grasp-daas.com/api/{service}[-dev]/{version}/docs/` |
+| OpenID discovery | `{IdP}/.well-known/openid-configuration` |
+| Agent skills | `skills/` in `grasp-labs/commons` |
+| Courses | *Welcome to Commons*, *Build with Commons* |

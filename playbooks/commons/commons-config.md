@@ -88,4 +88,4 @@ Linked service = how to reach a source; credentials are vault references (`commo
 `/llm/profile/` binds a tenant to models, `allowed_tools`, rate limits, approvals and guardrails;
 `/llm/profile/{id}/resolve/` shows the effective policy. See `commons-ai-gateway`.
 
-Schemas per type: `ds-config/api/openapi/components/schemas/`; examples: `ds-config/docs/examples/`.
+Schemas per type: `schema` tool or the OpenAPI docs at `<base>/docs/`.

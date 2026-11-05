@@ -29,11 +29,12 @@ Use `--project <path>` to install into one project instead of your user profile.
 - `courses/` — Course sources and course manifests
 - `playbooks/` — Skills rendered as Commons gateway playbooks
 
-`INSTRUCTIONS.md` is the shared operating agreement for managers, key staff,
-and engineers.
+Examples and helpers target production unless they explicitly select another
+environment. Writes still require valid credentials, IAM permission, and
+explicit approval.
 
-This repository is generated and released from the private Commons management
-tooling in `grasp-labs/commons-control`. `aic distribution status` compares this
-checkout with its source and `aic distribution sync` updates only the managed
-paths. Neither command commits or pushes. Changes made directly here will be
-replaced by the next sync.
+This repository is generated from private Grasp Labs sources. Pull requests are
+not merged here; report content issues to the platform team. Report security
+issues as described in `SECURITY.md`.
+
+Copyright © 2026 Grasp Labs. Proprietary; see `LICENSE`.

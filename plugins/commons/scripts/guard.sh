@@ -13,17 +13,20 @@ reply() { # DECISION REASON
     '{hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: $d, permissionDecisionReason: $r}}'
   exit 0
 }
+# Fail closed: a crash must not let the call through.
+trap 'code=$?; (( code == 0 )) || reply deny "guard failed (exit $code); denied."' EXIT
 
 input=$(cat)
-name=$(jq -r '.tool_name // ""' <<<"$input")
+name=$(printf '%s' "$input" | jq -r '.tool_name // ""')
+[[ -n $name ]] || reply deny "unreadable hook input; denied."
 arg() {
-  jq -r --arg k "$1" '.tool_input[$k] | if . == null then empty elif type == "string" then . else tojson end' <<<"$input"
+  printf '%s' "$input" | jq -r --arg k "$1" '.tool_input[$k] | if . == null then empty elif type == "string" then . else tojson end'
 }
 
 case $name in
-  Bash | Read)
-    text=$(arg command)$(arg file_path)
-    grep -qE '\.cache/commons|scripts/auth\.sh|commons-(dev|prod)|COMMONS_(DEV|PROD)_CLIENT_SECRET' <<<"$text" &&
+  Bash | Read | Grep | Glob)
+    text="$(arg command) $(arg file_path) $(arg path) $(arg pattern)"
+    printf '%s' "$text" | grep -qE '\.cache/|XDG_CACHE_HOME|\.jwt|scripts/auth\.sh|commons-(dev|prod)|CLIENT_SECRET|find-generic-password|secret-tool' &&
       reply deny "Commons credentials and tokens stay out of the conversation. Ask the user to run this in their own terminal."
     exit 0 ;;
   mcp__*commons*__*) tool=${name##*__} ;;
@@ -58,11 +61,14 @@ case $tool in
   query)
     [[ $mode == metadata ]] && reply deny "data_access=metadata blocks SQL results. Use preview with rows: 0, schema or text_to_sql."
     if [[ $mode == aggregates ]]; then
-      tr '[:upper:]' '[:lower:]' <<<"$(arg sql)" |
-        grep -qE '(count|sum|avg|min|max|median|stddev|approx_count_distinct)[[:space:]]*\(|group[[:space:]]+by' ||
+      sql=$(arg sql | tr '[:upper:]\n' '[:lower:] ' | sed -E 's#/\*([^*]|\*+[^*/])*\*+/##g; s/--.*$//')
+      printf ' %s' "$sql" | grep -qE '[[:space:])]over[[:space:]]*\(' &&
+        reply deny "data_access=aggregates: window functions return rows. Use GROUP BY."
+      printf '%s' "$sql" | grep -qE '(count|sum|avg|min|max|median|stddev|approx_count_distinct)[[:space:]]*\(|group[[:space:]]+by' ||
         reply deny "data_access=aggregates: return aggregates (COUNT, SUM, AVG, GROUP BY), not rows. Ask the user to switch data_access to rows if rows are required."
     fi
     max=$(arg max_rows)
+    [[ ${max:-100} =~ ^[0-9]+$ ]] || reply deny "max_rows must be a whole number."
     (( ${max:-100} <= 100 )) || reply ask "query returns up to $max rows into Claude's context." ;;
   plot)
     [[ $mode == metadata && -n $(arg sql) ]] && reply deny "data_access=metadata blocks SQL results." ;;

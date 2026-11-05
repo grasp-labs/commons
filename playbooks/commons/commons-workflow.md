@@ -54,8 +54,7 @@ Bindings wire data into ports:
  "target": {"kind": "port", "port": "inputs", "entry": "input_0"}}
 ```
 
-`sql-query` reads `settings.query` over `input_0`, `input_1`, …. Port registry:
-`ds-workflow-manager/src/common/tasks/tasks.yaml`.
+`sql-query` reads `settings.query` over `input_0`, `input_1`, …. Call `schema` for each task's ports.
 
 ## Example: payload → filter → upsert
 
@@ -76,4 +75,4 @@ Bindings wire data into ports:
 3. Run with a small payload; on failure read the failing task in `status` (`commons-state`).
 4. Add schedule or webhook; promote reviewed JSON to prod.
 
-Secrets live in linked services, never in task settings. Contract: `ds-workflow-manager/docs/contract.md`.
+Secrets live in linked services, never in task settings.

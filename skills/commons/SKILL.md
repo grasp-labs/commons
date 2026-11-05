@@ -10,15 +10,16 @@ isolated; every request carries a JWT; every action is checked by IAM.
 
 ## Environments
 
-| | dev | prod |
+| | prod (default) | dev (explicit) |
 |---|---|---|
-| APIs | `https://grasp-daas.com/api/{svc}-dev/{v}` | `https://grasp-daas.com/api/{svc}/{v}` |
-| IdP | `https://auth-dev.grasp-daas.com` | `https://auth.grasp-daas.com` |
-| MCP | `https://grasp-daas.com/api/ai-gateway-dev/v1/mcp` | `https://grasp-daas.com/api/ai-gateway/v1/mcp` |
-| App | `https://dev.aic-project.com` | `https://aic-project.com` |
+| APIs | `https://grasp-daas.com/api/{svc}/{v}` | `https://grasp-daas.com/api/{svc}-dev/{v}` |
+| IdP | `https://auth.grasp-daas.com` | `https://auth-dev.grasp-daas.com` |
+| MCP | `https://grasp-daas.com/api/ai-gateway/v1/mcp` | `https://grasp-daas.com/api/ai-gateway-dev/v1/mcp` |
+| App | `https://aic-project.com` | `https://dev.aic-project.com` |
 
 Versions: `config/v3`, `file/v2`, all others `v1`. OpenAPI docs at `<base>/docs/`.
-Work in **dev** unless the user explicitly says prod.
+Use **prod** unless the user explicitly selects dev. Production writes still
+require the effect to be stated and the user to approve it.
 
 ## Two ways in
 
@@ -35,18 +36,18 @@ Work in **dev** unless the user explicitly says prod.
 
    ```bash
    # macOS
-   security add-generic-password -s commons-dev -a client_id -w
-   security add-generic-password -s commons-dev -a client_secret -w
+   security add-generic-password -s commons-prod -a client_id -w
+   security add-generic-password -s commons-prod -a client_secret -w
    # Linux (libsecret)
-   secret-tool store --label commons-dev service commons-dev account client_id
-   secret-tool store --label commons-dev service commons-dev account client_secret
+   secret-tool store --label commons-prod service commons-prod account client_id
+   secret-tool store --label commons-prod service commons-prod account client_secret
    ```
 
-   Or export `COMMONS_DEV_CLIENT_ID` / `COMMONS_DEV_CLIENT_SECRET` (`PROD` for prod).
+   Or export `COMMONS_PROD_CLIENT_ID` / `COMMONS_PROD_CLIENT_SECRET`.
 3. In Claude Code: `/plugin` → `commons` → configure the environment and `data_access`. `/mcp` must
    show `commons` connected. Tokens refresh automatically.
 4. For REST in a session, start Claude from a shell that ran
-   `export COMMONS_JWT=$(<plugin dir>/scripts/auth.sh --token dev)` (valid 1 h).
+   `export COMMONS_JWT=$(<plugin dir>/scripts/auth.sh --token prod)` (valid 1 h).
 
 Claude must never run `auth.sh`, read the keychain, or ask for a secret; the guard hook blocks it.
 
@@ -54,7 +55,7 @@ Claude must never run `auth.sh`, read the keychain, or ask for a secret; the gua
 
 Token claims: `iss` (IdP), `sub` (email or client_id), `cls` (`user`|`app`), `rsc`
 (`<tenant_uuid>:<tenant_name>`), `exp`. The token carries **no permissions**; IAM decides per request.
-Staff log in via SSO (`{IdP}/oidc/authorize`, PKCE). Machines use `client_credentials` at
+People log in via SSO (`{IdP}/oidc/authorize`, PKCE). Machines use `client_credentials` at
 `{IdP}/oauth/token/` (1 h, no refresh token).
 
 ## Skill map
@@ -101,5 +102,5 @@ ai-gateway ─► tools ─► config | file | state | knowledge-graph | fetch |
 | 429 / -32000 | Rate limit | Wait `retryAfter` |
 | 503 | IAM or backing service down | Retry later |
 
-Look things up rather than guess: `<base>/docs/`, the book at `book/ai-commons/` in ds-file, and the
-OpenAPI spec in each `ds-*` repo.
+Look things up rather than guess: the OpenAPI docs at `<base>/docs/` and the book at
+`book/ai-commons/` in ds-file.

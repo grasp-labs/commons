@@ -4,10 +4,9 @@ Four flows explain the whole platform: **request**, **compute**, **AI**, **confi
 
 ## Edge
 
-Internet → AWS ALB (`ds-infrastructure/network/alb`) → path-based routes
-`/api/{service}[-dev]/{version}` → ECS services. `ds-tools` has no public route;
-only the gateway's security group reaches it. Kubernetes (`ds-k8s-platform`)
-hosts sandboxes and agent workloads.
+Internet → path-based routes `/api/{service}[-dev]/{version}` → services.
+`ds-tools` has no public route; only the AI gateway reaches it. Sandboxes and
+agent workloads run isolated from the APIs.
 
 ## 1. Request flow (every API call)
 

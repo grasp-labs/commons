@@ -95,12 +95,12 @@ and publishes to Kafka.
 | `POST /webhook/{event_id}/` | Signed webhook for a Config `event` |
 | `POST /oauth/webhook/{event_id}/` | Webhook authenticated with OAuth |
 
-New providers: add a verifier in `internal/service/webhook_verification.go`.
+For a provider not listed, ask the platform team.
 
 ## 6. ds-fetch — the datalake gate
 
 Read-only SQL over the tenant's bronze/silver/gold Parquet (DuckDB).
-`ds-fetch-indexer` keeps the file index fresh (S3 → SQS → Valkey).
+`ds-fetch-indexer` keeps the file index fresh.
 
 | Endpoint | Use |
 |---|---|

@@ -22,8 +22,7 @@ partition column (if any). **Primary key and `history_mode` cannot change once g
 ## Steps (dev first)
 
 1. **Linked service** `POST /linked-service/` — `type: ds.resource.linked-service.<source>`, settings
-   per `ds-config/api/openapi/components/schemas/linked_service/settings/<source>.yaml`, credentials as
-   vault references only (`commons-vault`).
+   per the `schema` tool for that type, credentials as vault references only (`commons-vault`).
 2. **Bronze dataset** `POST /dataset/` — `type: ds.resource.dataset.<source>`, `linked_service_id`,
    provider settings (e.g. Tripletex `{"product_name": "employee"}`). Sources: `tripletex`, `xledger`,
    `unimicro`, `powerofficego`, `simployer`, `http`, `graphql`, `soap`, `sftp`, `postgresql`,
@@ -71,4 +70,4 @@ subqueries, aggregates, `ORDER BY` or `LIMIT`; aliases need `AS`; outputs may no
 - [ ] No literal credentials anywhere.
 - [ ] Dev run completed and gold counts match the source before prod.
 
-Webhook-triggered pipelines skip bronze. Tested examples: `ds-config/internal/dto/pipeline/data/*.json`.
+Webhook-triggered pipelines skip bronze.

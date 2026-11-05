@@ -71,5 +71,3 @@ destructive tools. Models see them as `mcp_<slug>__<tool>`.
 
 `discover_tools`, `expand_tool` (tool schema, skill or playbook), `recall` (earlier sessions). Tool
 results are truncated at each tool's token budget; every call is in the audit trail and billed.
-
-Reference: `ds-ai-gateway/docs/walkthroughs/`, `ds-config/docs/llm/`.

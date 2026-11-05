@@ -28,7 +28,7 @@ graph and `ds-workflow-manager` executes it.
 | Notify | `functional.notification.email` |
 | Control | `control.condition.choice`, `control.condition.channel-guard`, `control.wait.sleep` |
 
-Registry with ports: `ds-workflow-manager/src/common/tasks/tasks.yaml`.
+Ports per task: call the `schema` tool.
 
 **Condition** (when a task runs given upstream results): `always`, `all-done`,
 `all-success`, `any-success`, `all-failure`, `any-failure`.
@@ -145,4 +145,3 @@ Edit `examples/data/workflow.json` to prototype a graph before writing Config ro
 - Name tasks `CATEGORY::ACTION::TARGET`; it makes runs readable.
 - Use `minor` severity for optional side effects (notifications).
 - Keep secrets in linked services; tasks reference datasets, not credentials.
-- More patterns: `docs/examples/http.json`, `ds-workflow-manager/docs/contract.md`.

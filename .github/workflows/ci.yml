@@ -1,0 +1,31 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate generated content
+        run: python validate.py
+      - name: Lint Python and shell
+        run: |
+          python -m compileall -q install.py validate.py
+          bash -n plugins/commons/scripts/*.sh
+      - name: Smoke-test installer
+        run: python install.py cursor --project "$RUNNER_TEMP/commons-test"
