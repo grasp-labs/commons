@@ -1,0 +1,11 @@
+{
+  "name": "commons",
+  "version": "1.0.0",
+  "assets": [
+    "claude-plugin",
+    "skills",
+    "book",
+    "courses",
+    "playbooks"
+  ]
+}

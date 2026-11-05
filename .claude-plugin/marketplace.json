@@ -1,0 +1,14 @@
+{
+  "name": "commons",
+  "description": "Claude Code plugins for AI Commons",
+  "owner": {
+    "name": "aider"
+  },
+  "plugins": [
+    {
+      "name": "commons",
+      "source": "./plugins/commons",
+      "description": "Governed Commons MCP tools, skills for every service and tool, and data-safety guardrails"
+    }
+  ]
+}

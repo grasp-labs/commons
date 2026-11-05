@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "commons": {
+      "type": "http",
+      "url": "${user_config.mcp_url}",
+      "headersHelper": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/auth.sh"
+    }
+  }
+}

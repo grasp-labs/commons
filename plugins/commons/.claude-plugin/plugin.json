@@ -1,0 +1,22 @@
+{
+  "name": "commons",
+  "version": "1.0.0",
+  "description": "Use AI Commons from Claude Code: the governed Commons MCP tools, one skill per service and tool, and guardrails that keep tenant data and secrets out of the model's context.",
+  "author": { "name": "Grasp" },
+  "repository": "https://github.com/grasp-labs/commons",
+  "keywords": ["commons", "grasp", "mcp", "datalake", "workflow", "iam"],
+  "userConfig": {
+    "mcp_url": {
+      "type": "string",
+      "title": "Commons MCP URL",
+      "description": "dev https://grasp-daas.com/api/ai-gateway-dev/v1/mcp or prod https://grasp-daas.com/api/ai-gateway/v1/mcp. Start with dev.",
+      "default": "https://grasp-daas.com/api/ai-gateway-dev/v1/mcp"
+    },
+    "data_access": {
+      "type": "string",
+      "title": "Tenant data Claude may see",
+      "description": "metadata (schemas, counts, names), aggregates (plus aggregate SQL; documents need approval) or rows (plus rows and documents). Unknown values mean metadata.",
+      "default": "aggregates"
+    }
+  }
+}

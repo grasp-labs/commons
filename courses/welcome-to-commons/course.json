@@ -1,0 +1,14 @@
+{
+  "name": "Welcome to Commons",
+  "slug": "welcome-to-commons",
+  "description": "Your first hour on AI Commons: what it is, how to log in, the building blocks, and where to go next.",
+  "theme": "aic",
+  "steps": [
+    "01-welcome.md",
+    "02-log-in.md",
+    "03-building-blocks.md",
+    "04-tools-and-ai.md",
+    "05-data-and-compute.md",
+    "06-next-steps.md"
+  ]
+}

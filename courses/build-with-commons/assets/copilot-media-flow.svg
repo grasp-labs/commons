@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Copilot to Commons media and data flow</title>
+  <desc id="desc">Copilot Studio connects to the governed Commons MCP gateway, then queries data, inspects images or extracts PDF text.</desc>
+  <defs>
+    <radialGradient id="bg" cx="86%" cy="18%" r="70%">
+      <stop offset="0" stop-color="#dff3d3"/>
+      <stop offset=".42" stop-color="#f6f9f2"/>
+      <stop offset="1" stop-color="#fcfdfb"/>
+    </radialGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0l10 5-10 5z" fill="#3d7a1c"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="675" rx="24" fill="url(#bg)"/>
+  <g font-family="Geist, Inter, system-ui, sans-serif" fill="#172012">
+    <text x="72" y="82" font-size="34" font-weight="600">Copilot uses one governed Commons connection</text>
+    <text x="72" y="119" font-size="18" fill="#5e6d57">Identity, IAM and tenant tool grants stay in the path</text>
+
+    <rect x="72" y="252" width="210" height="118" rx="16" fill="#fff" stroke="#d8e5d0" stroke-width="2"/>
+    <circle cx="118" cy="292" r="18" fill="#e0ead9"/>
+    <path d="M109 292h18M118 283v18" stroke="#3d7a1c" stroke-width="3" stroke-linecap="round"/>
+    <text x="150" y="299" font-size="22" font-weight="600">Copilot Studio</text>
+    <text x="96" y="339" font-size="16" fill="#5e6d57">Agent instructions</text>
+
+    <path d="M282 311H430" stroke="#3d7a1c" stroke-width="4" marker-end="url(#arrow)"/>
+    <rect x="446" y="222" width="260" height="178" rx="18" fill="#172012"/>
+    <text x="480" y="272" font-size="14" fill="#adfa1d" letter-spacing="2">STREAMABLE HTTP</text>
+    <text x="480" y="312" font-size="26" font-weight="600" fill="#fff">Commons MCP</text>
+    <text x="480" y="346" font-size="17" fill="#d8e5d0">OAuth / IAM / audit</text>
+    <text x="480" y="374" font-size="17" fill="#d8e5d0">tools/list / tools/call</text>
+
+    <path d="M706 274H806" stroke="#3d7a1c" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M706 311H806" stroke="#3d7a1c" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M706 348H806" stroke="#3d7a1c" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="822" y="176" width="306" height="112" rx="16" fill="#fff" stroke="#d8e5d0" stroke-width="2"/>
+    <text x="850" y="219" font-size="21" font-weight="600">Talk to data</text>
+    <text x="850" y="252" font-size="16" fill="#5e6d57">preview / text_to_sql / query</text>
+
+    <rect x="822" y="304" width="306" height="112" rx="16" fill="#fff" stroke="#d8e5d0" stroke-width="2"/>
+    <text x="850" y="347" font-size="21" font-weight="600">Understand an image</text>
+    <text x="850" y="380" font-size="16" fill="#5e6d57">write /files / inspect</text>
+
+    <rect x="822" y="432" width="306" height="112" rx="16" fill="#fff" stroke="#d8e5d0" stroke-width="2"/>
+    <text x="850" y="475" font-size="21" font-weight="600">Read a PDF exactly</text>
+    <text x="850" y="508" font-size="16" fill="#5e6d57">write /files / extract</text>
+
+    <rect x="72" y="570" width="1056" height="48" rx="12" fill="#e7eee1"/>
+    <text x="96" y="601" font-size="16" fill="#23351a">Start in dev / grant narrow paths / approve writes / preserve provenance</text>
+  </g>
+</svg>

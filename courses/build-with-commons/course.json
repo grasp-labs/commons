@@ -1,0 +1,11 @@
+{
+  "name": "Build with Commons",
+  "slug": "build-with-commons",
+  "description": "Three practical patterns: connect Microsoft Copilot, build a Prism datalakehouse, and let users talk safely to governed data.",
+  "theme": "aic",
+  "steps": [
+    "01-copilot-and-media.md",
+    "02-prism-datalakehouse.md",
+    "03-talk-to-data.md"
+  ]
+}
