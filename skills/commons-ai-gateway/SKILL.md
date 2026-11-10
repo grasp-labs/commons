@@ -66,5 +66,18 @@ destructive tools. Models see them as `mcp_<slug>__<tool>`.
 
 ## Harness extras
 
-`discover_tools`, `expand_tool` (tool schema, skill or playbook), `recall` (earlier sessions). Tool
-results are truncated at each tool's token budget; every call is in the audit trail and billed.
+`discover_tools`, `expand_tool` (tool schema, skill or playbook), `recall`
+(earlier sessions), and explicit user facts through `remember` / `forget`.
+Tool results are truncated at each tool's token budget; every call is in the
+audit trail and billed.
+
+Facts are not recall. A fact is one short note the user explicitly asks the
+assistant to keep across sessions; recall searches summaries of that user's
+earlier work. Facts are scoped to one user and tenant, capped at 30 facts of 300
+characters, deduplicated case-insensitively, and redacted with tenant
+guardrails before storage.
+
+Never infer a request to remember. Plan mode refuses both writes. `remember` is
+also refused after any tool output in the current run; ask the user to confirm
+in their next message instead. Facts are absent in fast mode, requests with
+client tools, `tool_choice: none`, and MCP.

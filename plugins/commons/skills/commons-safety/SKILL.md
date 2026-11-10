@@ -1,11 +1,11 @@
 ---
 name: commons-safety
-description: Data safety for using Claude with AI Commons. Least-privilege IAM for Claude's client, the data_access guard, keeping PII and secrets out of the model's context, routing Claude through the Commons gateway (Bedrock, tenant guardrails), and leak response. Use before touching tenant data, when setting up Claude for a tenant, or when anything sensitive is involved.
+description: Data safety for coding agents using AI Commons. Least-privilege IAM, explicit tool approvals, AI profiles, model routing, keeping PII and secrets out of model context, Claude Code's optional plugin guard, and leak response. Use before any agent touches tenant data or other sensitive material.
 ---
 
-# Safety with Claude
+# Safety with coding agents
 
-Everything a tool returns, every file Claude reads and every command output **enters the model's
+Everything a tool returns, every file an agent reads and every command output **enters the model's
 context** and leaves the machine for the model provider. Minimise what goes in; make the platform,
 not the prompt, the boundary.
 
@@ -16,16 +16,17 @@ not the prompt, the boundary.
 | 1. Identity | A dedicated OAuth client per person and purpose. Never platform-tenant, admin or shared tokens. | Platform team |
 | 2. IAM | The client's group has read-only policies; explicit denies on vault and IAM writes. | Tenant admin (`commons-iam`) |
 | 3. AI profile | `allowed_tools` grants only needed tools; approvals for write/rm/run; guardrails. | Tenant admin (`commons-ai-gateway`) |
-| 4. Model route | Claude's model calls go through the Commons gateway (Bedrock, tenant policy, audit). | User |
-| 5. Plugin guard | `data_access` and approvals on each tool call. Heuristic. | User |
+| 4. Model route | Model calls go through the Commons gateway (Bedrock, tenant policy, audit). | User |
+| 5. Local approvals | Keep IDE tool approvals enabled. Claude Code may additionally use the plugin guard. | User |
 
-### 1–2. Read-only identity for Claude
+### 1–2. Read-only agent identity
 
-Bind this policy to a group (e.g. `claude-readonly`) whose only member is Claude's client `sub`:
+Bind this policy to a group such as `agent-readonly` whose only member is the
+agent client's `sub`:
 
 ```json
 {
-  "name": "ClaudeReadOnly", "version": "1.0.0", "status": "active",
+  "name": "AgentReadOnly", "version": "1.0.0", "status": "active",
   "statements": [
     {"sid": "Mcp", "effect": "allow", "actions": ["ai-gateway:mcpMessage"],
      "resources": ["crn:aic:*:ai-gateway::*:**"]},
@@ -46,7 +47,7 @@ Bind this policy to a group (e.g. `claude-readonly`) whose only member is Claude
 }
 ```
 
-Add `file:getFileContent` only if Claude must read documents. Narrow `resources` to paths or ids
+Add `file:getFileContent` only if the agent must read documents. Narrow `resources` to paths or ids
 (`crn:aic:*:file::file:reports/**`) where you can. Verify with
 `cat /iam/principals/<sub>/policies` or `GET /api/iam[-dev]/v1/principal/<sub>/policies/`.
 
@@ -57,11 +58,12 @@ In Config `/llm/profile/`: grant only the tools needed in `allowed_tools`; set `
 `write`, `rm`, `run` on P2 (in-turn approval) or P3 (approver hold) for sensitive paths. Redaction
 applies to traffic through the gateway's model path; it does not rewrite MCP tool arguments.
 
-### 4. Route Claude's model through the gateway
+### 4. Route model calls through the gateway
 
-For regulated tenants, Claude Code itself should call the gateway, not api.anthropic.com. Then
-inference runs on Bedrock under the tenant's model allowlist, region pin, redaction and audit.
-In the user's own terminal:
+For regulated tenants, configure the agent to use the Commons gateway rather
+than a provider endpoint directly. Inference then runs under the tenant's model
+allowlist, region pin, redaction, and audit. For Claude Code, in the user's own
+terminal:
 
 ```bash
 export ANTHROPIC_BASE_URL=https://grasp-daas.com/api/ai-gateway-dev/v1/anthropic
@@ -69,21 +71,29 @@ export ANTHROPIC_AUTH_TOKEN=$(<plugin dir>/scripts/auth.sh --token dev)   # 1 h
 claude
 ```
 
-Requires the tenant profile to allow the Claude model Claude Code requests. Only bearer auth works.
+This requires the tenant profile to allow the requested model. Only bearer auth
+works.
 
-### 5. The plugin guard (`data_access`)
+### 5. Local approvals and the Claude Code guard
 
-| Mode | Claude may see | Blocked or asked |
+Cursor and Codex do not run the Commons Claude Code hook. Keep their tool
+approval controls enabled, review every state-changing call, and rely on
+layers 1–4 as the actual boundary.
+
+The Claude Code plugin adds a heuristic `data_access` guard:
+
+| Mode | Claude Code may see | Blocked or asked |
 |---|---|---|
 | `metadata` | Names, schemas, counts, job status | SQL results, `preview` rows, file/state content, grep snippets |
 | `aggregates` (default) | + aggregate SQL (`COUNT`, `SUM`, `AVG`, `GROUP BY`), charts | Row-level SQL denied; documents and state values asked |
 | `rows` | + rows and documents | `query` above 100 rows asked |
 
 Always: `write`, `rm`, `run` ask (with env); `write /vault` denied; `websearch`, `generate_image`,
-`frames` ask; reading Commons credentials via Bash or Read denied. The guard is pattern-based. A
+`frames` ask; reading Commons credentials via Bash or Read is denied. The guard
+is pattern-based and applies only when the Claude Code plugin is active. A
 `GROUP BY id` still leaks rows; layers 1–4 are the boundary.
 
-## Rules for Claude
+## Rules for every agent
 
 1. Start with metadata: `ls`, `info`, `schema`, `preview` with `rows: 0`. Pull data only when the task needs it.
 2. Aggregate in SQL. Select only needed columns; never `SELECT *` on people, payroll, health or customer tables.
@@ -100,5 +110,6 @@ Always: `write`, `rm`, `run` ask (with env); `write /vault` denied; `websearch`,
 
 1. Secret or token shown in chat: the user rotates it now (vault `PUT /secret/{id}/`; OAuth client
    secret via the platform team). Tokens expire within 1 h; the client secret does not.
-2. Delete the local transcript (`~/.claude/projects/...`) if it holds sensitive data.
+2. Delete affected local transcripts or chat history. For Claude Code, inspect
+   `~/.claude/projects/`; use the equivalent history controls in Cursor or Codex.
 3. Report to security with tenant, time and what was exposed. Gateway audit has the tool trail.

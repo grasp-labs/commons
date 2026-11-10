@@ -1,0 +1,116 @@
+{
+  "note": "Hosts, ids and vault paths are placeholders; field names match ds-protocol-http-py-lib 0.1.0.",
+  "linked_services": [
+    {
+      "name": "example-apikey",
+      "type": "ds.resource.linked-service.http",
+      "settings": {
+        "host": "api.example.com",
+        "schema": "https",
+        "auth_type": "APIKey",
+        "api_key": {"name": "Authorization", "value": "Bearer @{get_secret, /ds/vault/<store>/<tenant_id>/<id>/prod}"}
+      }
+    },
+    {
+      "name": "example-bearer-login",
+      "type": "ds.resource.linked-service.http",
+      "settings": {
+        "host": "api.example.com",
+        "auth_type": "Bearer",
+        "bearer": {
+          "token_endpoint": "https://api.example.com/v2/auth/login",
+          "username": "<user>",
+          "password": "@{get_secret, /ds/vault/<store>/<tenant_id>/<id>/prod}",
+          "username_key_name": "email",
+          "password_key_name": "password"
+        }
+      }
+    },
+    {
+      "name": "example-oauth2",
+      "type": "ds.resource.linked-service.http",
+      "settings": {
+        "host": "api.example.com",
+        "auth_type": "OAuth2",
+        "oauth2": {
+          "token_endpoint": "https://auth.example.com/oauth2/token",
+          "client_id": "<client_id>",
+          "client_secret": "@{get_secret, /ds/vault/<store>/<tenant_id>/<id>/prod}",
+          "scope": "orders.read"
+        }
+      }
+    },
+    {
+      "name": "example-custom",
+      "type": "ds.resource.linked-service.http",
+      "settings": {
+        "host": "api.example.com",
+        "auth_type": "Custom",
+        "headers": {"Content-Type": "application/json"},
+        "custom": {
+          "token_endpoint": "https://api.example.com/auth/session",
+          "data": {"api_user": "<user>", "api_secret": "@{get_secret, /ds/vault/<store>/<tenant_id>/<id>/prod}"}
+        }
+      }
+    }
+  ],
+  "datasets": [
+    {
+      "name": "example-get-nested",
+      "type": "ds.resource.dataset.http",
+      "linked_service_id": "<linked_service_uuid>",
+      "settings": {"method": "GET", "url": "https://api.example.com/v1/orders", "params": {"status": "open"}},
+      "deserializer": {"format": "semi-structured-json", "kwargs": {"record_path": ["data", "orders"]}}
+    },
+    {
+      "name": "example-path-params",
+      "type": "ds.resource.dataset.http",
+      "linked_service_id": "<linked_service_uuid>",
+      "settings": {
+        "method": "GET",
+        "url": "https://api.example.com/v1/customers/{customer_id}/orders",
+        "path_params": {"customer_id": "<set via task overrides>"}
+      },
+      "deserializer": {"format": "semi-structured-json", "kwargs": {}}
+    },
+    {
+      "name": "example-offset-paginated",
+      "type": "ds.resource.dataset.http",
+      "linked_service_id": "<linked_service_uuid>",
+      "settings": {
+        "method": "GET",
+        "url": "https://api.example.com/v1/customers",
+        "read": {
+          "pagination": {
+            "strategy": "offset",
+            "items_path": "data",
+            "max_pages": 1000,
+            "offset": {"offset_param": "offset", "limit_param": "limit", "page_size": 100, "total_path": "meta.total"}
+          }
+        }
+      },
+      "deserializer": {"format": "semi-structured-json", "kwargs": {"record_path": "data"}}
+    },
+    {
+      "name": "example-post-per-row",
+      "type": "ds.resource.dataset.http",
+      "linked_service_id": "<linked_service_uuid>",
+      "settings": {
+        "method": "POST",
+        "url": "https://api.example.com/v1/invoices",
+        "json": {"InvoiceNo": "$.InvoiceNo", "DueDate": "$.DueDate"}
+      },
+      "deserializer": {"format": "semi-structured-json", "kwargs": {}}
+    }
+  ],
+  "task_settings_fragments": [
+    {
+      "type": "ds.workflow.task.io.read.dataset",
+      "settings": {"overrides": {"path_params": {"customer_id": "#/variables/customer_id"}}}
+    },
+    {
+      "type": "ds.workflow.task.io.create.dataset",
+      "settings": {"batch_size": 1}
+    }
+  ]
+}

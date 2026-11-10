@@ -1,0 +1,62 @@
+{
+  "choice_task": {
+    "name": "Route by row count",
+    "version": "1.0.0",
+    "description": "Runs Post rows when the read returned rows, else Notify empty",
+    "status": "active",
+    "metadata": {},
+    "tags": {},
+    "type": "ds.workflow.task.control.condition.choice",
+    "settings": {
+      "expression": "len({{rows}}) > 0",
+      "choices": [
+        {"type": "rule", "value": true, "downstream": {"id": "<uuid>", "name": "Post rows"}},
+        {"type": "default", "downstream": {"id": "<uuid>", "name": "Notify empty"}}
+      ],
+      "timeout": null,
+      "variables": {}
+    },
+    "bindings": [
+      {
+        "source": {"kind": "task-ref", "ref": {"id": "<uuid>", "name": "Read rows"}, "channel": "success"},
+        "target": {"kind": "port", "port": "inputs", "entry": "rows"}
+      }
+    ],
+    "condition": "all-success",
+    "severity": "critical",
+    "breakpoint": false,
+    "workflow_id": "<uuid>",
+    "dataset_id": null,
+    "owner_id": null,
+    "linked_service_id": null
+  },
+  "channel_guard_on_failed_rows": {
+    "name": "Only if rows failed",
+    "version": "1.0.0",
+    "status": "active",
+    "type": "ds.workflow.task.control.condition.channel-guard",
+    "settings": {"allow_empty": false, "timeout": null, "variables": {}},
+    "bindings": [
+      {
+        "source": {"kind": "task-ref", "ref": {"id": "<uuid>", "name": "Post rows"}, "channel": "failure"},
+        "target": {"kind": "port", "port": "input"}
+      }
+    ],
+    "condition": "all-done",
+    "severity": "minor",
+    "breakpoint": false,
+    "workflow_id": "<uuid>"
+  },
+  "sleep_task": {
+    "name": "Wait 30 s",
+    "version": "1.0.0",
+    "status": "active",
+    "type": "ds.workflow.task.control.wait.sleep",
+    "settings": {"seconds": 30, "timeout": null, "variables": {}},
+    "bindings": [],
+    "condition": "all-success",
+    "severity": "minor",
+    "breakpoint": false,
+    "workflow_id": "<uuid>"
+  }
+}

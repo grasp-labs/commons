@@ -8,12 +8,13 @@ tenant and calls them **with your identity**.
 
 **The 20 tools**, grouped:
 
-- **Navigate**: `ls` `find` `cat` `info` `grep`
-- **Change**: `schema` `write` `rm`
+- **Files**: `ls` `cat` `find` `grep` `write` `rm`
+- **Data**: `query` `text_to_sql` `schema` `preview` `info`
 - **Compute**: `run` `status`
-- **Data**: `preview` `query` `text_to_sql` `plot`
-- **Media**: `inspect` `extract` `transcribe` `frames` `generate_image`
+- **Media**: `inspect` `extract` `transcribe` `frames` `plot` `generate_image`
 - **Web**: `websearch`
+
+Only `write`, `rm`, `run`, `frames` and `generate_image` change anything.
 
 **Use them from Cursor or Claude** by adding Commons as an MCP server:
 `{{API}}/ai-gateway{{ENV}}/v1/mcp`.

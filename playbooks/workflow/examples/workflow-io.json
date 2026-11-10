@@ -1,0 +1,68 @@
+{
+  "read_task": {
+    "name": "Read open invoices",
+    "version": "1.0.0",
+    "description": "Reads invoices for the customer given as a workflow variable",
+    "status": "active",
+    "metadata": {},
+    "tags": {},
+    "type": "ds.workflow.task.io.read.dataset",
+    "settings": {
+      "overrides": {
+        "path_params": {"customer_id": "#/variables/customer_id"}
+      },
+      "timeout": 300,
+      "variables": {}
+    },
+    "bindings": [],
+    "condition": "all-success",
+    "severity": "critical",
+    "breakpoint": false,
+    "workflow_id": "<uuid>",
+    "dataset_id": "<uuid>",
+    "owner_id": null,
+    "linked_service_id": null
+  },
+  "create_task": {
+    "name": "Post invoices",
+    "version": "1.0.0",
+    "description": "One POST per row; $. values come from the row",
+    "status": "active",
+    "metadata": {},
+    "tags": {},
+    "type": "ds.workflow.task.io.create.dataset",
+    "settings": {
+      "batch_size": 1,
+      "retry": 3,
+      "interval": 5,
+      "backoff": 2,
+      "include_error_columns": true,
+      "overrides": {
+        "json": {"InvoiceNo": "$.InvoiceNo", "Amount": "$.Amount"}
+      },
+      "timeout": null,
+      "variables": {}
+    },
+    "bindings": [
+      {
+        "source": {
+          "kind": "task-ref",
+          "ref": {"id": "<uuid>", "name": "Read open invoices"},
+          "channel": "success"
+        },
+        "target": {"kind": "port", "port": "input"}
+      }
+    ],
+    "condition": "all-success",
+    "severity": "critical",
+    "breakpoint": false,
+    "workflow_id": "<uuid>",
+    "dataset_id": "<uuid>",
+    "owner_id": null,
+    "linked_service_id": null
+  },
+  "dependency": {
+    "workflow_task_id": "<uuid>",
+    "dependency_id": "<uuid>"
+  }
+}

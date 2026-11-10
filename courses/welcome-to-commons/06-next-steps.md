@@ -9,7 +9,7 @@ title: Your first hour
 4. Store a file, add a node to the graph, run a workflow.
 5. Using Claude Code? Install the `commons` plugin (book chapter 8) and read its `commons-safety` skill first.
 
-**Go deeper**: read **The AI Commons Book** in Files → `book/ai-commons/`.
+**Go deeper**: read **The AI Commons Book** in Files → `book/ai-commons.pdf`.
 It covers security, every service and tool, wiring, triggers, MCP, datalakes,
 workflows and worked examples.
 

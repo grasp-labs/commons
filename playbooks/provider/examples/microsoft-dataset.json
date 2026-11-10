@@ -1,0 +1,66 @@
+{
+  "linked_service": {
+    "id": "<uuid>",
+    "type": "ds.resource.linked-service.microsoft-sql",
+    "version": "1.0.0",
+    "name": "mssql-prod",
+    "settings": {
+      "server": "sql.example.internal",
+      "database": "analytics",
+      "username": "svc_workflow",
+      "password": "@{get_secret, <vault-ref>}",
+      "port": 1433,
+      "driver": "ODBC Driver 18 for SQL Server",
+      "encrypt": true,
+      "trust_server_certificate": false,
+      "connection_timeout": 30
+    }
+  },
+  "datasets": [
+    {
+      "id": "<uuid>",
+      "type": "ds.resource.dataset.microsoft-sql",
+      "version": "1.0.0",
+      "name": "orders-read",
+      "settings": {
+        "table": "orders_open_v",
+        "schema": "dbo",
+        "read": {
+          "columns": [
+            "order_id",
+            "customer_id",
+            "amount",
+            "status"
+          ],
+          "filters": {
+            "status": "open"
+          },
+          "order_by": [
+            "order_id"
+          ],
+          "limit": 1000
+        }
+      }
+    },
+    {
+      "id": "<uuid>",
+      "type": "ds.resource.dataset.microsoft-sql",
+      "version": "1.0.0",
+      "name": "orders-load",
+      "settings": {
+        "table": "orders_stage",
+        "schema": "dbo",
+        "create": {
+          "index": false,
+          "primary_key": true,
+          "primary_key_columns": [
+            "order_id"
+          ]
+        },
+        "purge": {
+          "drop_table": false
+        }
+      }
+    }
+  ]
+}

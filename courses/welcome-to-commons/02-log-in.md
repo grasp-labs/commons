@@ -3,7 +3,9 @@ title: Log in safely
 ---
 # Log in safely
 
-- **People** sign in with **SSO** (work email → Entra ID) and **MFA**.
+- **People** sign in with **SSO** (*Sign in with your organisation*: work
+  email → your organisation's IdP, e.g. Entra ID), or with email and password
+  plus an authenticator code (**MFA**) once MFA is set up.
 - **Scripts and agents** use an OAuth client and get a one-hour token from
   `{{IDP}}/oauth/token/`.
 - Your token says **who you are** and **which tenant** you belong to.

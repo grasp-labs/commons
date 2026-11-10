@@ -1,0 +1,68 @@
+{
+  "note": "Write order: workflow, then tasks under /config/workflows/<workflow-uuid>/tasks, then one dependency row per edge, then schedule and its map. Ids are placeholders for values returned by earlier writes.",
+  "workflow": {
+    "name": "Orders to summary",
+    "description": "Reads open orders and writes a per-customer summary",
+    "status": "active",
+    "metadata": {},
+    "tags": {},
+    "settings": {
+      "timeout": 900,
+      "notify": {"on_success": false, "on_failure": true, "email": ["ops@example.com"]},
+      "compute_engine": "pandas",
+      "executor": "lambda",
+      "network": {"mode": "public"},
+      "variables": {"from": "@{get_start_date_last_month}"},
+      "retry": {"max_attempts": 1, "backoff_seconds": 0},
+      "max_concurrent_jobs": 1
+    }
+  },
+  "tasks": [
+    {
+      "name": "Read orders",
+      "version": "1.0.0",
+      "status": "active",
+      "type": "ds.workflow.task.io.read.dataset",
+      "dataset_id": "<orders-dataset-uuid>",
+      "settings": {"overrides": {"params": {"status": "open", "from": "#/variables/from"}}},
+      "bindings": [],
+      "condition": "all-success",
+      "severity": "critical",
+      "breakpoint": false
+    },
+    {
+      "name": "Summarise",
+      "version": "1.0.0",
+      "status": "active",
+      "type": "ds.workflow.task.operational.execution.python",
+      "settings": {
+        "source": {
+          "kind": "inline",
+          "content": "import pandas as pd\n\n\ndef main(**kwargs) -> pd.DataFrame:\n    orders = kwargs[\"orders\"]\n    return orders.groupby(\"customer_id\", as_index=False)[\"amount\"].sum()\n"
+        },
+        "timeout": 60,
+        "variables": {}
+      },
+      "bindings": [
+        {
+          "source": {"kind": "task-ref", "ref": {"id": "<read-orders-task-uuid>", "name": "Read orders"}, "channel": "success"},
+          "target": {"kind": "port", "port": "inputs", "entry": "orders"}
+        }
+      ],
+      "condition": "all-success",
+      "severity": "critical",
+      "breakpoint": false
+    }
+  ],
+  "dependencies": [
+    {"workflow_task_id": "<summarise-task-uuid>", "dependency_id": "<read-orders-task-uuid>"}
+  ],
+  "schedule": {
+    "name": "Daily 06:00 UTC",
+    "status": "active",
+    "type": "cron",
+    "cron": "0 6 * * *",
+    "settings": {}
+  },
+  "workflow_schedule": {"workflow_id": "<workflow-uuid>", "schedule_id": "<schedule-uuid>"}
+}

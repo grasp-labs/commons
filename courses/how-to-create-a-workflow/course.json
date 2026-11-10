@@ -1,0 +1,20 @@
+{
+  "name": "How to create a workflow",
+  "slug": "how-to-create-a-workflow",
+  "description": "Learn to design, build, wire, and run a workflow from tasks — with conditions, severity, retries, and monitoring.",
+  "theme": "aic-signal",
+  "steps": [
+    "01-welcome-from-idea-to-a-running-workflow.md",
+    "02-what-a-workflow-actually-is.md",
+    "03-the-two-objects-config-and-tasks.md",
+    "04-step-1-create-the-workflow-container.md",
+    "05-step-2-anatomy-of-a-task.md",
+    "06-step-3-pick-your-tasks-from-the-catalogue.md",
+    "07-step-4-control-when-a-task-runs.md",
+    "08-step-5-decide-what-counts-as-failure.md",
+    "09-step-6-wire-the-data-with-bindings.md",
+    "10-step-7-a-worked-example.md",
+    "11-step-8-run-it-and-read-the-result.md",
+    "12-your-checklist-and-the-mistakes-to-avoid.md"
+  ]
+}

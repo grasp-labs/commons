@@ -8,7 +8,8 @@ set -euo pipefail
 
 die() { echo "commons auth: $*" >&2; exit 1; }
 
-raw= env=
+raw=
+env=
 if [[ ${1:-} == --token ]]; then
   raw=1 env=${2:-}
 else

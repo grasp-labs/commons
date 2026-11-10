@@ -10,8 +10,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 TEXT_SUFFIXES = {".json", ".md", ".py", ".sh", ".toml", ".yaml", ".yml"}
+PATTERN_FILE = ROOT / "private-reference-pattern.txt"
 INTERNAL_REFERENCE = re.compile(
-    r"\b(?:ds-[a-z0-9-]+|identity-server)/(?:docs|internal|infra|api)/"
+    PATTERN_FILE.read_text(encoding="utf-8").strip(),
+    re.IGNORECASE,
 )
 
 
@@ -21,9 +23,22 @@ def main() -> int:
         errors.append("INSTRUCTIONS.md is private and must not be distributed")
     if not (ROOT / "LICENSE").is_file():
         errors.append("LICENSE is missing")
+    plugin = ROOT / "plugins" / "commons" / ".claude-plugin" / "plugin.json"
+    try:
+        default_url = json.loads(plugin.read_text(encoding="utf-8"))["userConfig"][
+            "mcp_url"
+        ]["default"]
+        if default_url != "https://grasp-daas.com/api/ai-gateway/v1/mcp":
+            errors.append("plugin MCP default must be production")
+    except (OSError, KeyError, json.JSONDecodeError) as error:
+        errors.append(f"plugin manifest is invalid: {error}")
 
     for path in sorted(ROOT.rglob("*")):
-        if not path.is_file() or ".git" in path.parts:
+        if (
+            not path.is_file()
+            or ".git" in path.parts
+            or path.resolve() == PATTERN_FILE.resolve()
+        ):
             continue
         relative = path.relative_to(ROOT).as_posix()
         if path.suffix == ".json":

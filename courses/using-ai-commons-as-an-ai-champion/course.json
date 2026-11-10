@@ -1,0 +1,19 @@
+{
+  "name": "Using AI Commons as an AI Champion",
+  "slug": "using-ai-commons-as-an-ai-champion",
+  "description": "How a non-technical AI Champion makes AI genuinely useful in their team: explaining Commons, finding what already exists, capturing tribal knowledge, authoring playbooks, answering the safety questions, and running a first pilot that sticks.",
+  "theme": "cloud",
+  "steps": [
+    "01-welcome-make-ai-actually-land-in-your-team.md",
+    "02-the-champion-is-a-translator-not-an-engineer.md",
+    "03-what-commons-is-in-one-sentence.md",
+    "04-twenty-tools-five-families.md",
+    "05-search-before-you-create.md",
+    "06-turn-tribal-knowledge-into-cited-knowledge.md",
+    "07-playbooks-teach-the-system-your-way-of-working.md",
+    "08-trust-what-to-tell-a-nervous-stakeholder.md",
+    "09-choose-a-first-use-case-you-can-win.md",
+    "10-your-first-two-weeks.md"
+  ],
+  "cover": "assets/cover.png"
+}

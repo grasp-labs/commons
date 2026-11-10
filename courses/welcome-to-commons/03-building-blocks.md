@@ -10,6 +10,7 @@ title: The building blocks
 | **When** | ds-message (now), ds-ingress (webhook), schedules (cron) |
 | **Data** | ds-fetch (SQL on the datalake), ds-file, ds-state, ds-knowledge-graph |
 | **AI** | ds-ai-gateway (models + policy + MCP), ds-tools (the 20 tools) |
+| **Out** | ds-channels (email, SMS, Slack, Teams to verified channels; emerging) |
 
 **Three compute blocks** do the work:
 

@@ -36,7 +36,7 @@
 
     <rect x="822" y="176" width="306" height="112" rx="16" fill="#fff" stroke="#d8e5d0" stroke-width="2"/>
     <text x="850" y="219" font-size="21" font-weight="600">Talk to data</text>
-    <text x="850" y="252" font-size="16" fill="#5e6d57">preview / text_to_sql / query</text>
+    <text x="850" y="252" font-size="16" fill="#5e6d57">ls / preview / query</text>
 
     <rect x="822" y="304" width="306" height="112" rx="16" fill="#fff" stroke="#d8e5d0" stroke-width="2"/>
     <text x="850" y="347" font-size="21" font-weight="600">Understand an image</text>

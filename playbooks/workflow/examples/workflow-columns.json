@@ -1,0 +1,39 @@
+{
+  "ds.workflow.task.operational.transformation.rename": {
+    "columns": {"InvoiceNo": "invoice_no", "Amt": "amount"}
+  },
+  "ds.workflow.task.operational.transformation.assign": {
+    "column": "currency",
+    "value": "NOK",
+    "condition": "isna"
+  },
+  "ds.workflow.task.operational.transformation.derived-columns": {
+    "operations": [
+      {"type": "eval", "column": "gross", "expression": "amount * 1.25"},
+      {"type": "assign", "column": "source", "value": "erp"},
+      {"type": "assign", "column": "external_ref", "copy_from": "invoice_no"},
+      {"type": "function", "column": "loaded_at", "func": "@{get_iso_timestamp_now}"},
+      {"type": "function", "column": "run_id", "func": "#/variables/run_id"},
+      {"type": "join", "column": "key", "on": ["customer_id", "invoice_no"], "sep": "-"},
+      {"type": "replace", "column": "phone", "old": " ", "new": ""},
+      {"type": "explode", "column": "tags", "sep": ";"},
+      {"type": "hash", "column": "row_hash"}
+    ]
+  },
+  "ds.workflow.task.operational.transformation.dtypes": {
+    "mapping": {"amount": "float64", "quantity": "Int64", "customer_id": "string", "lines": "json"}
+  },
+  "ds.workflow.task.operational.transformation.map": {
+    "column": "status",
+    "mapping": {"O": "open", "C": "closed"},
+    "default_value": "unknown"
+  },
+  "ds.workflow.task.operational.transformation.series": {
+    "operations": [
+      {"column": "amount", "operation": "round", "arguments": {"decimals": 2}},
+      {"column": "discount", "operation": "fillna", "arguments": {"value": 0}},
+      {"column": "due_date", "operation": "to_date", "arguments": {"format": "%d.%m.%Y", "utc": true}},
+      {"column": "quantity", "operation": "astype", "arguments": {"dtype": "Int64"}}
+    ]
+  }
+}

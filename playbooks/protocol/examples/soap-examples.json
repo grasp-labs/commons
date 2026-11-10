@@ -1,0 +1,89 @@
+{
+  "note": "WSDL URLs, operation and parameter names, ids and vault paths are placeholders; read the real names off the WSDL. Field names match ds-protocol-soap-py-lib 0.1.0.",
+  "linked_services": [
+    {
+      "name": "example-basic",
+      "type": "ds.resource.linked-service.soap",
+      "settings": {
+        "wsdl": "https://ws.example.com/Data.asmx?WSDL",
+        "auth_type": "Basic",
+        "auth_test_method": "Ping",
+        "basic": {"username": "<user>", "password": "@{get_secret, /ds/vault/<store>/<tenant_id>/<id>/prod}"}
+      }
+    },
+    {
+      "name": "example-xledger-token-exchange",
+      "type": "ds.resource.linked-service.soap",
+      "settings": {
+        "wsdl": "https://<data-host>/FileUpload.asmx?WSDL",
+        "auth_type": "BasicWithTokenExchange",
+        "basic_with_token_exchange": {
+          "auth_wsdl": "https://<auth-host>/Authentication.asmx?WSDL",
+          "username": "<user>",
+          "password": "@{get_secret, /ds/vault/<store>/<tenant_id>/<id>/prod}",
+          "auth_method": "LogonKey",
+          "auth_method_kwargs": {"sApplication": "XLEDGER"},
+          "credential_param_key": "sKey"
+        }
+      }
+    },
+    {
+      "name": "example-24sevenoffice-cookie-session",
+      "type": "ds.resource.linked-service.soap",
+      "settings": {
+        "wsdl": "https://<data-host>/ProjectService.asmx?wsdl",
+        "auth_type": "CookieSession",
+        "auth_test_method": "<cheap read-only operation>",
+        "cookie_session": {
+          "auth_wsdl": "https://<auth-host>/Authenticate.asmx?wsdl",
+          "auth_method": "Login",
+          "credential_type": "{http://24sevenOffice.com/webservices}Credential",
+          "credential_param_name": "requestCredential",
+          "credentials": {
+            "ApplicationId": "<application_guid>",
+            "Username": "<user>",
+            "Password": "@{get_secret, /ds/vault/<store>/<tenant_id>/<id>/prod}",
+            "IdentityId": "<identity_guid>"
+          },
+          "auth_method_kwargs": {"locale": "nb-NO"},
+          "session_check_method": "HasSession",
+          "cookie_name": "ASP.NET_SessionId",
+          "cookie_domain": "<data-host>"
+        }
+      }
+    },
+    {
+      "name": "example-parameter-based",
+      "type": "ds.resource.linked-service.soap",
+      "settings": {
+        "wsdl": "https://ws.example.com/service?wsdl",
+        "auth_type": "ParameterBased",
+        "auth_test_method": "Ping",
+        "parameter_based": {
+          "auth_param_key1": "apiKey",
+          "auth_param_value1": "@{get_secret, /ds/vault/<store>/<tenant_id>/<id>/prod}"
+        }
+      }
+    }
+  ],
+  "datasets": [
+    {
+      "name": "example-read-records",
+      "type": "ds.resource.dataset.soap",
+      "linked_service_id": "<linked_service_uuid>",
+      "settings": {"method": "GetRecords", "kwargs": {"sFilter": "ChangedAfter=2026-01-01"}},
+      "deserializer": {"format": "semi-structured-json", "kwargs": {"record_path": ["Records", "Record"]}}
+    },
+    {
+      "name": "example-create-order-per-row",
+      "type": "ds.resource.dataset.soap",
+      "linked_service_id": "<linked_service_uuid>",
+      "settings": {"method": "CreateOrder", "kwargs": {"CustomerId": "$.CustomerId", "Amount": "$.Amount"}},
+      "deserializer": {"format": "semi-structured-json", "kwargs": {}}
+    }
+  ],
+  "task_settings_fragments": [
+    {"type": "ds.workflow.task.io.read.dataset", "settings": {"overrides": {"kwargs": {"sFilter": "#/variables/filter"}}}},
+    {"type": "ds.workflow.task.io.create.dataset", "settings": {"batch_size": 1}}
+  ]
+}

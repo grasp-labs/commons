@@ -17,8 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.12"
       - name: Validate generated content
@@ -27,5 +29,19 @@ jobs:
         run: |
           python -m compileall -q install.py validate.py
           bash -n plugins/commons/scripts/*.sh
+          shellcheck plugins/commons/scripts/*.sh
+      - name: Smoke-test security guard
+        run: |
+          decision="$(
+            printf '%s' '{"tool_name":"Bash","tool_input":{"command":"cat ~/.cache/commons/dev.jwt"}}' |
+              plugins/commons/scripts/guard.sh |
+              jq -r '.hookSpecificOutput.permissionDecision'
+          )"
+          test "$decision" = "deny"
+          output="$(
+            printf '%s' '{"tool_name":"Bash","tool_input":{"command":"pwd"}}' |
+              plugins/commons/scripts/guard.sh
+          )"
+          test -z "$output"
       - name: Smoke-test installer
         run: python install.py cursor --project "$RUNNER_TEMP/commons-test"

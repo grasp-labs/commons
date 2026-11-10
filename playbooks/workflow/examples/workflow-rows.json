@@ -1,0 +1,35 @@
+{
+  "ds.workflow.task.operational.transformation.filter-values": {
+    "filters": [
+      {"column": "status", "include": ["open", "overdue"]},
+      {"column": "customer_name", "contains": ["AS", "ASA"], "drop_none": true},
+      {"column": "invoice_no", "drop_duplicates": true, "drop_empty": true}
+    ]
+  },
+  "ds.workflow.task.operational.transformation.filter-columns": {
+    "columns": ["invoice_no", "customer_id", "amount", "status"]
+  },
+  "ds.workflow.task.operational.transformation.query": {
+    "expr": "amount > 100 and `due date` < '2026-01-01'"
+  },
+  "ds.workflow.task.operational.transformation.sql-query": {
+    "settings": {
+      "query": "SELECT c.customer_id, c.name, SUM(i.amount) AS total FROM invoices i JOIN customers c USING (customer_id) GROUP BY ALL"
+    },
+    "bindings": [
+      {
+        "source": {"kind": "task-ref", "ref": {"id": "<uuid>", "name": "Read invoices"}, "channel": "success"},
+        "target": {"kind": "port", "port": "inputs", "entry": "invoices"}
+      },
+      {
+        "source": {"kind": "task-ref", "ref": {"id": "<uuid>", "name": "Read customers"}, "channel": "success"},
+        "target": {"kind": "port", "port": "inputs", "entry": "customers"}
+      }
+    ]
+  },
+  "ds.workflow.task.operational.transformation.extract-xml-value": {
+    "column": "response_xml",
+    "new_column": "order_id",
+    "xml_tag": "*[local-name()='Body']/*[local-name()='CreateOrderResponse']/*[local-name()='OrderId']"
+  }
+}

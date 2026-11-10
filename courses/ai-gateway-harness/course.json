@@ -1,0 +1,19 @@
+{
+  "name": "AI Gateway Harness",
+  "slug": "ai-gateway-harness",
+  "description": "Introduction into the Harness of Commons plattform",
+  "theme": "spectrum",
+  "steps": [
+    "01-welcome.md",
+    "02-the-vision.md",
+    "03-one-request-end-to-end.md",
+    "04-tools-and-discovery.md",
+    "05-skills-and-playbooks.md",
+    "06-memory.md",
+    "07-the-self-improving-loop.md",
+    "08-governance-and-safety.md",
+    "09-external-mcp-servers.md",
+    "10-ownership-and-failure.md"
+  ],
+  "cover": "assets/cover.png"
+}

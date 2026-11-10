@@ -14,7 +14,13 @@ reply() { # DECISION REASON
   exit 0
 }
 # Fail closed: a crash must not let the call through.
-trap 'code=$?; (( code == 0 )) || reply deny "guard failed (exit $code); denied."' EXIT
+# shellcheck disable=SC2329  # Invoked by the EXIT trap.
+on_exit() {
+  local code=$?
+  trap - EXIT
+  (( code == 0 )) || reply deny "guard failed (exit $code); denied."
+}
+trap on_exit EXIT
 
 input=$(cat)
 name=$(printf '%s' "$input" | jq -r '.tool_name // ""')

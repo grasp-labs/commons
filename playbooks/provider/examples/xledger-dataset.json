@@ -1,0 +1,57 @@
+{
+  "linked_service": {
+    "id": "<uuid>",
+    "type": "ds.resource.linked-service.xledger",
+    "version": "1.0.0",
+    "name": "xledger-prod",
+    "settings": {
+      "host": "https://www.xledger.net/graphql",
+      "token": "@{get_secret, <vault-ref>}",
+      "timeout": 60
+    }
+  },
+  "datasets": [
+    {
+      "id": "<uuid>",
+      "type": "ds.resource.dataset.xledger",
+      "version": "1.0.0",
+      "name": "companies-read",
+      "settings": {
+        "entrypoint": "companies",
+        "read": {
+          "columns": [
+            "dbId",
+            "code",
+            "description",
+            "modifiedAt"
+          ],
+          "filter": {
+            "modifiedAt_gte": "2024-01-01T00:00:00Z"
+          },
+          "owner_set": "MINE",
+          "object_status": "OPEN",
+          "first": 500
+        }
+      }
+    },
+    {
+      "id": "<uuid>",
+      "type": "ds.resource.dataset.xledger",
+      "version": "1.0.0",
+      "name": "bank-accounts-write",
+      "settings": {
+        "entrypoint": "bankAccounts",
+        "create": {
+          "return_columns": [
+            "dbId"
+          ]
+        },
+        "update": {
+          "return_columns": [
+            "dbId"
+          ]
+        }
+      }
+    }
+  ]
+}

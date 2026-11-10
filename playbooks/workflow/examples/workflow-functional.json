@@ -1,0 +1,62 @@
+{
+  "input_source_task": {
+    "name": "Parse order payload",
+    "version": "1.0.0",
+    "description": "Turns the orders array in the payload variable into rows",
+    "status": "active",
+    "metadata": {},
+    "tags": {},
+    "type": "ds.workflow.task.functional.input.source",
+    "settings": {
+      "format": "semi-structured-json",
+      "kwargs": {"record_path": ["orders"], "meta": ["customer_id"]},
+      "timeout": null,
+      "variables": {}
+    },
+    "bindings": [
+      {
+        "source": {"kind": "variable", "name": "payload"},
+        "target": {"kind": "port", "port": "payload"}
+      }
+    ],
+    "condition": "all-success",
+    "severity": "critical",
+    "breakpoint": false,
+    "workflow_id": "<uuid>",
+    "dataset_id": null,
+    "owner_id": null,
+    "linked_service_id": null
+  },
+  "email_failed_rows_task": {
+    "name": "Mail failed rows",
+    "version": "1.0.0",
+    "description": "Runs after a channel guard on a write task's failure channel",
+    "status": "active",
+    "metadata": {},
+    "tags": {},
+    "type": "ds.workflow.task.functional.notification.email",
+    "settings": {
+      "subject": "Invoice export: rows failed",
+      "content": "#/tasks/<uuid>/success/$.rows.0.body",
+      "content_type": "text",
+      "to_recipients": ["finance@example.com"],
+      "cc_recipients": null,
+      "attachment": true,
+      "timeout": null,
+      "variables": {}
+    },
+    "bindings": [
+      {
+        "source": {"kind": "task-ref", "ref": {"id": "<uuid>", "name": "Only if rows failed"}, "channel": "success"},
+        "target": {"kind": "port", "port": "named_inputs", "entry": "failed_rows"}
+      }
+    ],
+    "condition": "all-success",
+    "severity": "minor",
+    "breakpoint": false,
+    "workflow_id": "<uuid>",
+    "dataset_id": null,
+    "owner_id": null,
+    "linked_service_id": null
+  }
+}

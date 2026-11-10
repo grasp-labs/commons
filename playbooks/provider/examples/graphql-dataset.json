@@ -1,0 +1,61 @@
+{
+  "datasets": [
+    {
+      "id": "<uuid>",
+      "type": "ds.resource.dataset.graphql",
+      "version": "1.0.0",
+      "name": "countries-by-region",
+      "linked_service": {
+        "id": "<uuid>",
+        "type": "ds.resource.linked-service.http",
+        "version": "1.0.0",
+        "name": "graphql-country",
+        "settings": {
+          "host": "https://graphql.country/",
+          "auth_type": "NoAuth"
+        }
+      },
+      "settings": {
+        "url": "https://graphql.country/graphql",
+        "read": {
+          "query": "query GetCountriesByRegion($regionName: String!) { countries(region: $regionName, first: 10) { edges { node { name alpha2Code capital population } } } }",
+          "variables": {
+            "regionName": "Europe"
+          },
+          "operation_name": "GetCountriesByRegion"
+        }
+      }
+    },
+    {
+      "id": "<uuid>",
+      "type": "ds.resource.dataset.graphql",
+      "version": "1.0.0",
+      "name": "posts-write",
+      "linked_service": {
+        "id": "<uuid>",
+        "type": "ds.resource.linked-service.http",
+        "version": "1.0.0",
+        "name": "graphqlzero",
+        "settings": {
+          "host": "https://graphqlzero.almansi.me/",
+          "auth_type": "NoAuth"
+        }
+      },
+      "settings": {
+        "url": "https://graphqlzero.almansi.me/api",
+        "create": {
+          "mutation": "mutation CreatePost($input: CreatePostInput!) { createPost(input: $input) { id title body } }",
+          "input_field": "input",
+          "operation_name": "CreatePost"
+        },
+        "delete": {
+          "mutation": "mutation DeletePost($id: ID!) { deletePost(id: $id) }",
+          "identity_columns": [
+            "id"
+          ],
+          "operation_name": "DeletePost"
+        }
+      }
+    }
+  ]
+}

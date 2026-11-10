@@ -1,0 +1,17 @@
+{
+  "name": "Commons Business Analytics",
+  "slug": "commons-business-analytics",
+  "description": "Business Analytics",
+  "theme": "editorial",
+  "steps": [
+    "01-welcome.md",
+    "02-what-ai-commons-is-in-one-sentence.md",
+    "03-the-eleven-services.md",
+    "04-the-three-compute-blocks.md",
+    "05-how-it-fits-your-power-bi-sql-stack.md",
+    "06-governance-briefly.md",
+    "07-try-it-a-first-pilot.md",
+    "08-what-we-re-asking-of-you.md"
+  ],
+  "cover": "assets/cover.png"
+}

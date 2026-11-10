@@ -2,10 +2,12 @@
   "name": "commons",
   "version": "1.0.0",
   "assets": [
-    "claude-plugin",
+    ".claude-plugin",
+    "plugins",
     "skills",
     "book",
     "courses",
+    "news",
     "playbooks"
   ]
 }

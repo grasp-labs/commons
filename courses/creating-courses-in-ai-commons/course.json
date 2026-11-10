@@ -1,0 +1,25 @@
+{
+  "name": "Creating courses in AI Commons",
+  "slug": "creating-courses-in-ai-commons",
+  "description": "A practical guide to planning, writing, visualizing, reviewing, and publishing clear learning experiences with Markdown and Mermaid.",
+  "theme": "aic-signal",
+  "steps": [
+    "01-welcome-build-a-course-people-can-follow.md",
+    "02-understand-the-course-model.md",
+    "03-plan-the-learning-path-before-writing.md",
+    "04-write-clear-markdown.md",
+    "05-add-links-images-and-media-responsibly.md",
+    "06-turn-text-into-a-mermaid-diagram.md",
+    "07-know-which-mermaid-diagrams-aic-supports.md",
+    "08-choose-the-diagram-that-answers-the-question.md",
+    "09-build-mermaid-diagrams-that-stay-readable.md",
+    "10-compose-the-slide-layout-theme-and-rhythm.md",
+    "11-review-share-and-publish-safely.md",
+    "12-configure-identity-theme-visuals-and-folder.md",
+    "13-use-every-editor-control.md",
+    "14-share-with-the-right-audience.md",
+    "15-navigate-the-gallery-and-course-player.md",
+    "16-final-quality-check-before-publishing.md"
+  ],
+  "cover": "assets/cover.webp"
+}

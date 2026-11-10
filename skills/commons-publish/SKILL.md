@@ -1,6 +1,6 @@
 ---
 name: commons-publish
-description: Publish content to Commons. Playbooks (ds-file plus KG node), courses (BFF /web-api/courses) and books (ds-file book/ prefix), privately or public via safe aic content plan/apply. Use when writing, uploading, updating or making public a playbook, course or book.
+description: Publish content to Commons. Playbooks (ds-file plus KG node), courses (BFF /api/web-api/courses) and books (ds-file book/ prefix), privately or public via safe aic content plan/apply. Use when writing, uploading, updating or making public a playbook, course or book.
 ---
 
 # Publish to Commons
@@ -21,11 +21,11 @@ Gateway models find it via `discover_tools` → `expand_tool`. Playbooks are ran
 
 ## Course
 
-`POST {app}/web-api/courses` (Bearer), body `CourseSaveContract`: `name`, `slug`, `description`, `theme`, `status`,
+`POST {app}/api/web-api/courses` (Bearer), body `CourseSaveContract`: `name`, `slug`, `description`, `theme`, `status`,
 `is_public`, `acl {owners: [≥1], viewers}`, `steps[{id, title, content_loaded: true, removed_column_ids: [],
 columns: [{id, type: "markdown", content, width: 100, vertical_align: "top", image_alt: ""}]}]`,
 `step_order`, `removed_step_ids`, `remove_cover: false`, `remove_background: false`.
-Update with `PUT {app}/web-api/courses/{public_|tenant_}<slug>`; stored at `courses/<prefixed slug>/`.
+Update with `PUT {app}/api/web-api/courses/{public_|tenant_}<slug>`; stored at `courses/<prefixed slug>/`.
 
 ## Book
 

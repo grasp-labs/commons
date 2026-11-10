@@ -1,0 +1,41 @@
+{
+  "name": "Score clients",
+  "version": "1.0.0",
+  "description": "Adds a score column to the upstream client rows",
+  "status": "active",
+  "metadata": {},
+  "tags": {},
+  "type": "ds.workflow.task.operational.execution.python",
+  "settings": {
+    "source": {
+      "kind": "inline",
+      "content": "import pandas as pd\n\n\ndef main(**kwargs) -> pd.DataFrame:\n    clients = kwargs[\"clients\"]\n    out = clients.copy()\n    out[\"score\"] = out[\"revenue\"].rank(pct=True)\n    return out\n"
+    },
+    "timeout": 60,
+    "variables": {}
+  },
+  "bindings": [
+    {
+      "source": {
+        "kind": "task-ref",
+        "ref": {
+          "id": "<upstream-task-uuid>",
+          "name": "Load clients"
+        },
+        "channel": "success"
+      },
+      "target": {
+        "kind": "port",
+        "port": "inputs",
+        "entry": "clients"
+      }
+    }
+  ],
+  "condition": "all-success",
+  "severity": "critical",
+  "breakpoint": false,
+  "workflow_id": "<workflow-uuid>",
+  "owner_id": null,
+  "dataset_id": null,
+  "linked_service_id": null
+}

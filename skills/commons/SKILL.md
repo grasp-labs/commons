@@ -5,7 +5,7 @@ description: Entry point for AI Commons (Grasp DaaS). Platform map, environments
 
 # AI Commons
 
-**1 IdP, 12 services, 4 compute blocks (clone, workflow, pipeline, agent), 20 tools.** Every tenant is
+**1 IdP, 14 services, 4 compute blocks (clone, workflow, pipeline, agent), 20 tools.** Every tenant is
 isolated; every request carries a JWT; every action is checked by IAM.
 
 ## Environments
@@ -23,15 +23,15 @@ require the effect to be stated and the user to approve it.
 
 ## Two ways in
 
-1. **MCP tools** (preferred). The plugin connects the `commons` MCP server; tools appear as
-   `mcp__plugin_commons_commons__<tool>`. Governed by tenant profile + IAM + audit. Load `commons-tools`.
+1. **MCP tools** (preferred). In Claude Code the plugin connects the `commons` MCP server; tools
+   appear as `mcp__plugin_commons_commons__<tool>`. Cursor and Codex connect it as in book chapter 7. Governed by tenant profile + IAM + audit. Load `commons-tools`.
 2. **REST** with `curl` and `Authorization: Bearer $COMMONS_JWT`, for things tools do not cover.
    Use the variable; never print, echo or log its value.
 
 ## Setup (the user does this in their own terminal, never in chat)
 
 1. Get an OAuth client (`client_id`, `client_secret`) for your tenant from the platform team.
-   Prefer a dedicated, least-privilege client for Claude (`commons-safety`).
+   Prefer a dedicated, least-privilege client for the agent (`commons-safety`).
 2. Store it in the OS keychain (prompts for the value; nothing lands in shell history):
 
    ```bash
@@ -45,11 +45,13 @@ require the effect to be stated and the user to approve it.
 
    Or export `COMMONS_PROD_CLIENT_ID` / `COMMONS_PROD_CLIENT_SECRET`.
 3. In Claude Code: `/plugin` → `commons` → configure the environment and `data_access`. `/mcp` must
-   show `commons` connected. Tokens refresh automatically.
-4. For REST in a session, start Claude from a shell that ran
+   show `commons` connected. Tokens refresh automatically. In Cursor or Codex: configure MCP as in
+   book chapter 7 and keep tool approvals on; there is no guard hook.
+4. For REST in a session, start the agent from a shell that ran
    `export COMMONS_JWT=$(<plugin dir>/scripts/auth.sh --token prod)` (valid 1 h).
 
-Claude must never run `auth.sh`, read the keychain, or ask for a secret; the guard hook blocks it.
+Agents must never run `auth.sh`, read the keychain, or ask for a secret; in Claude Code the guard
+hook blocks it.
 
 ## Identity
 
@@ -62,7 +64,7 @@ People log in via SSO (`{IdP}/oidc/authorize`, PKCE). Machines use `client_crede
 
 | Task | Skill |
 |---|---|
-| Keep data and secrets safe with Claude | `commons-safety` |
+| Keep data and secrets safe with agents | `commons-safety` |
 | Use the 20 tools | `commons-tools` |
 | Permissions, groups, policies | `commons-iam` |
 | Secrets | `commons-vault` |
@@ -103,4 +105,4 @@ ai-gateway ─► tools ─► config | file | state | knowledge-graph | fetch |
 | 503 | IAM or backing service down | Retry later |
 
 Look things up rather than guess: the OpenAPI docs at `<base>/docs/` and the book at
-`book/ai-commons/` in ds-file.
+`book/ai-commons.pdf` in ds-file.

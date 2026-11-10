@@ -1,0 +1,13 @@
+{
+  "name": "How To Build Agents",
+  "slug": "how-to-build-agents",
+  "description": "Build a working agent in Microsoft Copilot Studio, then extend it with actions and Commons tools over MCP.",
+  "theme": "aic",
+  "steps": [
+    "01-welcome.md",
+    "02-what-is-an-agent.md",
+    "03-choosing-a-platform.md",
+    "04-build-a-basic-agent-in-copilot-studio.md",
+    "05-extend-your-agent-with-actions-and-mcp.md"
+  ]
+}

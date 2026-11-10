@@ -23,9 +23,9 @@ server-side at run time.
 
 IAM: `vault:<operationId>` on `crn:aic:*:vault::secret:*`.
 
-## Claude never handles secret values
+## Agents never handle secret values
 
-The user creates or rotates secrets in their own terminal; Claude may prepare the command. The value
+The user creates or rotates secrets in their own terminal; the agent may prepare the command. The value
 is read silently and never appears in history or chat:
 
 ```bash
@@ -35,8 +35,8 @@ read -rs VALUE && jq -n --arg v "$VALUE" \
     -H "Content-Type: application/json" -d @- | jq '{id, key}'; unset VALUE
 ```
 
-With tools, `/vault` is metadata-only (`ls /vault`, `cat /vault/<id>`); the plugin guard denies
-`write /vault`.
+With tools, `/vault` is metadata-only (`ls /vault`, `cat /vault/<id>`); never `write /vault`
+(the Claude Code guard denies it).
 
 ## Referencing a secret
 
