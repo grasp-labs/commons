@@ -1,7 +1,7 @@
 ---
 name: "Playbook"
-slug: "playbook"
-domain: "playbook"
+slug: playbook
+domain: playbook
 description: "Author, validate, and publish AI Commons playbooks: format, limits, storage, discovery, and review rules."
 when_to_use: "Use when creating, reviewing, publishing, or retiring a playbook, or auditing one against the authoring standard."
 prefer_skills: []
@@ -32,13 +32,13 @@ others:
 | Key | Rule |
 | --- | --- |
 | `name` | Display name returned on load. |
-| `slug` | Equals the file name stem; `^[a-z0-9]+([_-][a-z0-9]+)*$`; unique across all domains. |
-| `domain` | Same pattern; groups the remote path. |
+| `slug` | Equals the file name stem; unique. In `service`, `block` and `tool` it is the entity's name (`ds-file`, `workflow`, `cat`); in other domains it is the domain or `<domain>-<topic>` (`workflow-python`, `protocol-http`). |
+| `domain` | One of `service`, `block`, `tool`, `workflow`, `protocol`, `provider`, `memory`, `playbook`; the remote folder. |
 | `description` | One sentence. Becomes the ds-file description and the KG node `rag_summary`, the snippet discovery ranks and shows. |
 | `when_to_use` | Concrete triggers, returned on load so the model can confirm fit. |
 | `prefer_skills` | `llm_skill` slugs, resolved to load tokens on load. Unknown or unavailable slugs return a "not available to this tenant" note, so list only skills that exist. |
 | `related_tools` | Declared AI Commons tool ids only (`ls`, `cat`, `write`, ...). |
-| `examples` | Paths `playbook/<domain>/examples/<file>` in the playbook's own domain; each file must exist and its name be unique across playbooks. |
+| `examples` | Paths `playbook/<domain>/examples/<slug>[-<topic>].json`. Required in `block`, `workflow`, `protocol` and `provider`, whose playbooks configure a payload. |
 
 The body after the closing `---` must be non-empty and at most 4800 characters.
 The AI Gateway clamps a loaded body at about 1200 tokens and appends a
@@ -52,9 +52,10 @@ A playbook is two records with the same issuer (`tenant` or `public`):
 - ds-file `playbook/<domain>/<slug>.md`, tags `kind=playbook` and `domain`.
   Each example is a ds-file `playbook/<domain>/examples/<file>`, tag
   `kind=playbook-example`.
-- KG node `playbook:<slug>`, type `unknown`, status `active`, `uri`
-  `dsfile://<file-id>`, `external_id` the file id, `rag_summary` the
-  description, and the same issuer.
+- KG node `playbook:<slug>` (name and `external_id`), type `document`, `uri`
+  `dsfile://<file-id>`, `rag_summary` the description and `when_to_use`, and
+  a card body naming the file. Its entity (`tool:cat`) or its domain's
+  anchor (`playbook:workflow` for `workflow-*`) owns it by an `owns` edge.
 
 The node is what makes a playbook discoverable. The KG has no `playbook` node
 type; the `playbook:` name prefix is the discriminator.
@@ -86,8 +87,8 @@ type; the `playbook:` name prefix is the discriminator.
 ## Review checklist
 
 1. Front matter has exactly the eight keys.
-2. `slug` matches the file name and is unique.
+2. `slug` matches the file name and follows the domain rule.
 3. `prefer_skills` slugs exist; `related_tools` are real tool ids.
 4. Examples exist and are referenced by their domain path.
 5. Body is at most 4800 characters and states only verified facts.
-6. Retire by removing both the file and the `playbook:<slug>` node.
+6. Retire by removing the source; prune retires the file and the node.

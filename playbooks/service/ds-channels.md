@@ -29,7 +29,7 @@ examples: []
   is accepted and stored by Config, but no pipeline service sends
   anything from it today. Do not promise pipeline alerts.
 - Inside a user's own Microsoft 365 tenant, sending mail is a provider
-  integration question; see the `microsoft` playbook.
+  integration question; see the `provider-microsoft` playbook.
 
 ## Answering a notification request
 

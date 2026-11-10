@@ -17,7 +17,7 @@ examples: [playbook/workflow/examples/workflow-functional.json]
 | Email | `ds.workflow.task.functional.notification.email` | `named_inputs`, map, optional |
 | Collect errors | `ds.workflow.task.operational.analytics.collect-errors` | none |
 
-Bindings and edges work as in the `python` playbook. Full payloads:
+Bindings and edges work as in the `workflow-python` playbook. Full payloads:
 `playbook/workflow/examples/workflow-functional.json`.
 
 ## Runtime values

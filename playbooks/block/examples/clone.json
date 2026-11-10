@@ -1,0 +1,21 @@
+{
+  "name": "invoices-to-warehouse",
+  "status": "active",
+  "source_id": "<source dataset uuid>",
+  "target_id": "<target dataset uuid>",
+  "settings": {
+    "network": {"mode": "public"},
+    "retry": {"max_attempts": 3, "backoff_seconds": 60},
+    "executor": "lambda",
+    "batch_size": 1000,
+    "conflict_policy": "delta",
+    "id_column": "invoice_no",
+    "mappings": {
+      "columns": {
+        "InvoiceNo": {"target": "invoice_no", "type": "string"},
+        "Amount": {"target": "amount", "type": "float64", "default": 0},
+        "DueDate": {"target": "due_date", "type": "datetime64[ns]"}
+      }
+    }
+  }
+}

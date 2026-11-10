@@ -130,10 +130,14 @@ model at the start of every session, framed as Kari's own notes, not
 instructions. `recall` answers "what did I do"; facts answer "what should you
 always know about me".
 
-- At most 30 facts per user, each one line of up to 300 characters.
+- At most 30 facts per user, each one line of up to 300 characters: line
+  breaks collapse to spaces. Saving a duplicate reports `already_exists`.
 - Private to the user: every read and write filters by tenant and user.
 - `remember` is refused once any tool output is in the run, so text from a tool
   cannot plant a fact that reaches every later session.
+- `forget` removes at most one fact: the one equal to the text, else the only
+  one containing it. If "Acme" is in two facts, nothing is removed; the model
+  shows Kari both and asks which one.
 
 ## Prompt caching: memory for the provider
 

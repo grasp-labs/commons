@@ -1,7 +1,7 @@
 ---
 name: "ds-tools: the tool plane"
-slug: "ds-tools"
-domain: "service"
+slug: ds-tools
+domain: service
 description: "How the AI Commons tools work together: the path model and roots, discovery before addressing, read and write effects, P0/P2/P3 approval tiers, output budgets and overflow files, timeouts, and the error classes."
 when_to_use: "Orienting in AI Commons before a multi-tool task, deciding which tool addresses a resource, or interpreting an approval, overflow, timeout or error class from any tool."
 prefer_skills: []

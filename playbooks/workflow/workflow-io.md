@@ -13,9 +13,9 @@ examples: [playbook/workflow/examples/workflow-io.json]
 
 A dataset task runs one operation on the dataset set in the task's `dataset_id`.
 The dataset and its linked service decide what the call does: configure them
-with the `http`, `soap`, `graphql`, `microsoft` or `xledger` playbook. This
+with the `protocol-http`, `protocol-soap`, `protocol-graphql`, `provider-microsoft` or `provider-xledger` playbook. This
 playbook covers the task wrapper. Bindings and `upstream` edges work as in the
-`python` playbook.
+`workflow-python` playbook.
 
 Type `ds.workflow.task.io.<op>.dataset`, version `1.0.0`. Output: the
 provider's DataFrame on the success channel.

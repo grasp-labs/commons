@@ -1,0 +1,28 @@
+{
+  "name": "overdue-invoice-summary",
+  "version": "1.0.0",
+  "instructions": "Summarise overdue invoices for the customer in #/inputs/customer_id. Read only the invoices dataset. Stop when every overdue invoice is counted.",
+  "io": {
+    "input": {
+      "type": "object",
+      "properties": {"customer_id": {"type": "string"}},
+      "required": ["customer_id"]
+    },
+    "output": {
+      "type": "object",
+      "properties": {"overdue_count": {"type": "integer"}, "overdue_total": {"type": "number"}},
+      "required": ["overdue_count", "overdue_total"],
+      "additionalProperties": false
+    },
+    "evidence": "required"
+  },
+  "grant": {
+    "tools": ["ls", "query", "preview"],
+    "read": ["/datasets/gold/*"],
+    "write": [],
+    "run": []
+  },
+  "model": {"mode": "adaptive", "max_turns": 12, "repair_turns": 1},
+  "posture": "plan",
+  "runtime": {"executor": "lambda", "timeout_s": 600}
+}

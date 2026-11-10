@@ -79,5 +79,7 @@ guardrails before storage.
 
 Never infer a request to remember. Plan mode refuses both writes. `remember` is
 also refused after any tool output in the current run; ask the user to confirm
-in their next message instead. Facts are absent in fast mode, requests with
+in their next message instead. `forget` removes at most one fact; when several
+contain the text it removes none and returns `matches`, so ask which one and
+call again with its full text. Facts are absent in fast mode, requests with
 client tools, `tool_choice: none`, and MCP.

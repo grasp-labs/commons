@@ -1,0 +1,39 @@
+{
+  "ds.workflow.task.operational.transformation.join": {
+    "settings": {
+      "condition": {"left_on": "customer_id", "right_on": "id", "how": "left", "validate": "many_to_one"}
+    },
+    "bindings": [
+      {
+        "source": {"kind": "task-ref", "ref": {"id": "<uuid>", "name": "Read invoices"}, "channel": "success"},
+        "target": {"kind": "port", "port": "left"}
+      },
+      {
+        "source": {"kind": "task-ref", "ref": {"id": "<uuid>", "name": "Read customers"}, "channel": "success"},
+        "target": {"kind": "port", "port": "right"}
+      }
+    ]
+  },
+  "ds.workflow.task.operational.transformation.concat": {
+    "settings": {"drop_duplicates": false, "reset_index": true},
+    "bindings": [
+      {
+        "source": {"kind": "task-ref", "ref": {"id": "<uuid>", "name": "Read 2025"}, "channel": "success"},
+        "target": {"kind": "port", "port": "inputs"}
+      },
+      {
+        "source": {"kind": "task-ref", "ref": {"id": "<uuid>", "name": "Read 2026"}, "channel": "success"},
+        "target": {"kind": "port", "port": "inputs"}
+      }
+    ]
+  },
+  "ds.workflow.task.operational.transformation.aggregate": {
+    "settings": {"by": ["customer_id"], "func": {"amount": "sum", "invoice_no": "count"}, "round": 2},
+    "bindings": [
+      {
+        "source": {"kind": "task-ref", "ref": {"id": "<uuid>", "name": "Join customers"}, "channel": "success"},
+        "target": {"kind": "port", "port": "input"}
+      }
+    ]
+  }
+}

@@ -17,7 +17,7 @@ examples: [playbook/workflow/examples/workflow-control.json]
 | Channel guard | `ds.workflow.task.control.condition.channel-guard` | `input`, single, optional |
 | Sleep | `ds.workflow.task.control.wait.sleep` | none |
 
-Bindings and `upstream` edges work as in the `python` playbook.
+Bindings and `upstream` edges work as in the `workflow-python` playbook.
 
 ## How the scheduler decides
 

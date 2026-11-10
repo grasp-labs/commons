@@ -6,14 +6,14 @@ description: Merge, stack, and group workflow DataFrames with the join, concat, 
 when_to_use: A workflow must join two DataFrames on keys, stack the outputs of several tasks (including failure channels), or group and summarise rows, or such a task returns an unexpected row count.
 prefer_skills: []
 related_tools: [ls, cat, write]
-examples: []
+examples: [playbook/workflow/examples/workflow-combine.json]
 ---
 
 # Workflow combine transformations
 
 Version `1.0.0`, type prefix `ds.workflow.task.operational.transformation.`,
 one DataFrame out on the success channel. Any exception fails the task with
-its message. Bindings and edges work as in the `python` playbook.
+its message. Bindings and edges work as in the `workflow-python` playbook.
 
 | Task | `type` suffix | Input ports |
 | --- | --- | --- |
@@ -23,6 +23,8 @@ its message. Bindings and edges work as in the `python` playbook.
 
 For three or more inputs, filtered joins or grouping with expressions, one
 `sql-query` task (see `workflow-rows`) is usually simpler than a chain.
+
+Settings and bindings for all three: `playbook/workflow/examples/workflow-combine.json`.
 
 ## join
 

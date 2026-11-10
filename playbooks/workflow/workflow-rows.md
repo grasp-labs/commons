@@ -13,7 +13,7 @@ examples: [playbook/workflow/examples/workflow-rows.json]
 
 Version `1.0.0`, type prefix `ds.workflow.task.operational.transformation.`,
 one DataFrame out on the success channel. Any exception fails the task with
-its message. Bindings and edges work as in the `python` playbook. Settings
+its message. Bindings and edges work as in the `workflow-python` playbook. Settings
 shapes: `playbook/workflow/examples/workflow-rows.json`.
 
 | Need | `type` suffix | Input port |

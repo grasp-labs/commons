@@ -14,7 +14,7 @@ examples: [playbook/workflow/examples/workflow-columns.json]
 All six tasks take one DataFrame on port `input` (single, required), return one
 DataFrame on the success channel, and are version `1.0.0`. Type prefix:
 `ds.workflow.task.operational.transformation.`. Any exception fails the task
-with its message. Bindings and edges work as in the `python` playbook;
+with its message. Bindings and edges work as in the `workflow-python` playbook;
 `playbook/workflow/examples/workflow-columns.json` has one settings block per
 task.
 

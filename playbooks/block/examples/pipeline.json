@@ -1,0 +1,18 @@
+{
+  "name": "customers-gold",
+  "status": "active",
+  "owner_id": "<gold partition uuid>",
+  "bronze_id": "<source dataset uuid>",
+  "gold_id": "<ds.resource.dataset.aic-gold dataset uuid>",
+  "snapshot_profile_id": "<runtime profile uuid>",
+  "incremental_profile_id": "<runtime profile uuid>",
+  "transform": {
+    "sql_query": "SELECT b.id AS customer_id, b.name AS name, b.modified_at AS modified_at FROM bronze AS b WHERE b.deleted IS NOT TRUE",
+    "non_null_columns": ["customer_id"]
+  },
+  "settings": {
+    "strategy_policy": {"defaults": {"load_mode": "incremental"}},
+    "artifact_policy": {"bronze_retention_days": "180d", "silver_retention_days": "180d"},
+    "notify": {"email": "data-team@example.com", "on_failure": true, "on_success": false}
+  }
+}
